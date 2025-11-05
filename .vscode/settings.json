@@ -1,5 +1,5 @@
 {
-    "i18n-ally.localesPaths": [
-        "AIchat/locales"
-    ]
+  "i18n-ally.localesPaths": ["AIchat/locales"],
+  "i18n-ally.displayLanguage": "zh",
+  "i18n-ally.keystyle": "nested"
 }

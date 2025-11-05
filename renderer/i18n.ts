@@ -22,12 +22,13 @@ async function createI18nInstance() {
 
 export const i18n = await createI18nInstance();
 
-export async function setLanguage(lang: LanguageType, _i18n?: I18n) {
+export function setLanguage(lang: LanguageType, _i18n?: I18n) {
   const __i18n = _i18n ?? i18n;
   if (__i18n.mode === "legacy") {
     __i18n.global.locale = lang;
     return;
   }
+
   (__i18n.global.locale as unknown as Ref<LanguageType>).value = lang;
 }
 
@@ -37,5 +38,4 @@ export function getLanguage() {
   }
   return (i18n.global.locale as unknown as Ref<LanguageType>).value;
 }
-
 export default i18n;

@@ -7,7 +7,9 @@
         <li
           class="sidebar-item no-drag cursor-pointer hover:text-primary-hover text-tx-primary"
         >
-          <iconify-icon icon="lets-icons:comment" width="24" height="24" />
+          <native-tooltip :content="t('main.sidebar.conversations')">
+            <iconify-icon icon="lets-icons:comment" width="24" height="24" />
+          </native-tooltip>
         </li>
       </ul>
       <ul>
@@ -20,7 +22,9 @@
           class="sidebar-item no-drag cursor-pointer hover:text-primary-subtle"
           @click="openSettingWindow"
         >
-          <iconify-icon icon="uil:setting" width="24" height="24" />
+          <native-tooltip :content="t('main.sidebar.settings')">
+            <iconify-icon icon="uil:setting" width="24" height="24" />
+          </native-tooltip>
         </li>
       </ul>
     </nav>
@@ -31,7 +35,9 @@
 import DragRegion from "./DragRegion.vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
+import NativeTooltip from "./NativeTooltip.vue";
 defineOptions({ name: "NavBar" });
+const { t } = useI18n();
 const openSettingWindow = () => {};
 </script>
 

@@ -4,12 +4,22 @@ const iconMap = new Map([
   ["dark", "circum:dark"],
 ]);
 
+const tooltipMap = new Map([
+  ["system", "settings.theme.system"],
+  ["light", "settings.theme.light"],
+  ["dark", "settings.theme.dark"],
+]);
+
 export function useThemeMode() {
   const themeMode = ref<ThemeMode>("dark");
   const isDark = ref<boolean>(false);
+  const { t } = useI18n()
   //   类似发布订阅模式
   const themeChangeCallback: Array<(mode: ThemeMode) => void> = [];
   const themeIcon = computed(() => iconMap.get(themeMode.value || "system"));
+  const themeTooltip = computed(() =>
+    t(tooltipMap.get(themeMode.value || 'system') as string)
+  );
 
   function setThemeMode(mode: ThemeMode) {
     themeMode.value = mode;
@@ -41,6 +51,7 @@ export function useThemeMode() {
     themeMode,
     isDark,
     themeIcon,
+    themeTooltip,
     setThemeMode,
     getThemeMode,
     onThemeChange,
