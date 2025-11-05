@@ -9,6 +9,7 @@ import {
   BrowserWindowConstructorOptions,
   ipcMain,
   IpcMainInvokeEvent,
+  nativeTheme,
   type IpcMainEvent,
 } from "electron";
 import { debounce } from "../../common/utils";
@@ -28,6 +29,8 @@ interface SizeOptions {
 const SHARED_WINDOW_OPTIONS = {
   titleBarStyle: "hidden",
   title: "xq",
+  darkTheme: nativeTheme.shouldUseDarkColors,
+  backgroundColor: nativeTheme.shouldUseDarkColors ? "#2c2c2c" : "#ffffff",
   webPreferences: {
     nodeIntegration: false, // 禁用 Node.js 集成，提高安全性
     contextIsolation: true, // 启用上下文隔离，防止渲染进程访问主进程 API
@@ -161,7 +164,7 @@ class WindowService {
   public toggleMax(target: BrowserWindow | void | null) {
     if (!target) return;
     const action = target.isMaximized() ? "unmaximized" : "maximized";
-    logManager.info(`Window ${action}`); 
+    logManager.info(`Window ${action}`);
     target.isMaximized() ? target.unmaximize() : target.maximize();
   }
 }

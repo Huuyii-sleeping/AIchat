@@ -32,6 +32,9 @@ importers:
       unplugin-auto-import:
         specifier: ^20.2.0
         version: 20.2.0(@vueuse/core@14.0.0(vue@3.5.22(typescript@5.9.3)))
+      vfonts:
+        specifier: 0.0.3
+        version: 0.0.3
       vue:
         specifier: ^3.5.17
         version: 3.5.22(typescript@5.9.3)
@@ -2560,6 +2563,9 @@ packages:
     resolution: {integrity: sha512-H9V1zGRLQZg9b+GdMk8MXDN2Lva0zx72MPahDKc30v+DtwKjfyOSXWRIX4t2mhDubM1H09gPhWeth/BJWPHGUw==}
     peerDependencies:
       vue: ^3.0.11
+
+  vfonts@0.0.3:
+    resolution: {integrity: sha512-nguyw8L6Un8eelg1vQ31vIU2ESxqid7EYmy8V+MDeMaHBqaRSkg3dTBToC1PR00D89UzS/SLkfYPnx0Wf23IQQ==}
 
   vite@6.4.1:
     resolution: {integrity: sha512-+Oxm7q9hDoLMyJOYfUYBuHQo+dkAloi33apOPP56pzj+vsdJDzr+j1NISE5pyaAuKL4A3UD34qd0lx5+kfKp2g==}
@@ -5460,6 +5466,8 @@ snapshots:
     dependencies:
       evtd: 0.2.4
       vue: 3.5.22(typescript@5.9.3)
+
+  vfonts@0.0.3: {}
 
   vite@6.4.1(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2):
     dependencies:

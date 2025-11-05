@@ -1,6 +1,8 @@
 <template>
-  <n-config-provider class="h-full w-screen flex">
-    <aside class="h-screen flex shrink-0 flex-col bg-amber-600">Aside</aside>
+  <n-config-provider class="h-full w-screen flex text-tx-primary">
+    <aside class="sidebar h-full flex shrink-0 flex-col w-[200px]">
+      Aside
+    </aside>
     <div class="flex-auto">
       <TitleBar> <DragRegion class="w-full"> xq </DragRegion></TitleBar>
       Main
@@ -13,11 +15,6 @@ import { NConfigProvider } from "naive-ui";
 import TitleBar from "./components/TitleBar.vue";
 import DragRegion from "./components/DragRegion.vue";
 
-onMounted(async () => {
-  console.log("App mounted");
-  await nextTick();
-  throw new Error("text error");
-});
 </script>
 
 <style scoped>

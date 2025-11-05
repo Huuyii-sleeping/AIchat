@@ -3,7 +3,7 @@
     <div class="title-bar-main flex-auto">
       <slot>{{ title ?? "" }}</slot>
     </div>
-    <div class="title-bar-controls w-20 flex items-center justify-end">
+    <div class="title-bar-controls w-20 flex items-center justify-end text-tx-secondary">
       <button
         v-show="isMinimizable"
         class="title-bar-button cursor-pointer hover:bg-input"
@@ -64,7 +64,7 @@ withDefaults(defineProps<TitleBarProps>(), {
   isMinimizable: true,
   isClosable: true,
 });
-const btnSize = 15;
+const btnSize = 20;
 const emit = defineEmits(["close"]);
 const { isMaximized, closeWindow, minimizeWindow, maximizeWindow } =
   useWinManager();
@@ -72,7 +72,7 @@ function handleClose() {
   emit("close");
   closeWindow();
 }
-</script> 
+</script>
 
 <style scoped>
 .title-bar-button {
