@@ -72,7 +72,7 @@ function handleClose() {
   emit("close");
   closeWindow();
 }
-</script>
+</script> 
 
 <style scoped>
 .title-bar-button {

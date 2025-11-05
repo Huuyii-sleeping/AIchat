@@ -19,4 +19,4 @@ import DragRegion from "./components/DragRegion.vue";
   background-color: var(--bg-color);
   box-shadow: -3px -2px 10px rgba(101, 101, 101, 0.2);
 }
-</style>
+</style> 

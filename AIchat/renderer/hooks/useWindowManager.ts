@@ -22,7 +22,7 @@ export function useWinManager() {
     );
   });
 
-  return {
+  return { 
     isMaximized,
     closeWindow,
     minimizeWindow,
