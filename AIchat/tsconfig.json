@@ -1,20 +1,28 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.config.json"
-    }
-  ],
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@common/*": ["./common/*"],
-      "@main/*": ["./main/*"],
-      "@renderer/*": ["./renderer/*"],
-      "@locales/*": ["./locales/*"]
-    }
-  }
+	"files": [],
+	"references": [
+		{
+			"path": "./tsconfig.app.json"
+		},
+		{
+			"path": "./tsconfig.config.json"
+		}
+	],
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"@common/*": [
+				"common/*"
+			],
+			"@main/*": [
+				"main/*"
+			],
+			"@renderer/*": [
+				"renderer/*"
+			],
+			"@locales/*": [
+				"locales/*"
+			],
+		}
+	}
 }

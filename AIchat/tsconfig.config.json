@@ -7,14 +7,9 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "noEmit": true,
-    "baseUrl": "./",
-    "paths": {
-      "@common/*": ["./common/*"],
-      "@main/*": ["./main/*"],
-      "@renderer/*": ["./renderer/*"],
-      "@locales/*": ["./locales/*"]
-    }
+    "noEmit": true
   },
-  "include": ["**.config.ts"]
+  "include": [
+    "**.config.ts"
+  ]
 }
