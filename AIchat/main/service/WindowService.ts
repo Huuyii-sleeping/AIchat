@@ -116,7 +116,7 @@ class WindowService {
     window.once("closed", () => {
       window?.destroy();
       window?.removeListener("resize", updateWinStatus);
-      logManager.info(`Window closed:${name}`);
+      logManager.info(`Window closed`);
     });
     window.on("resize", updateWinStatus);
 
@@ -154,14 +154,14 @@ class WindowService {
    */
   public close(target: BrowserWindow | void | null) {
     if (!target) return;
-    logManager.info(`Closing window: ${name}`);
+    logManager.info(`Closing window`);
     target?.close();
   }
 
   public toggleMax(target: BrowserWindow | void | null) {
     if (!target) return;
     const action = target.isMaximized() ? "unmaximized" : "maximized";
-    logManager.info(`Window ${name} ${action}`);
+    logManager.info(`Window ${action}`); 
     target.isMaximized() ? target.unmaximize() : target.maximize();
   }
 }
