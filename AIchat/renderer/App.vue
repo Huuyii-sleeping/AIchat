@@ -12,6 +12,12 @@
 import { NConfigProvider } from "naive-ui";
 import TitleBar from "./components/TitleBar.vue";
 import DragRegion from "./components/DragRegion.vue";
+
+onMounted(async () => {
+  console.log("App mounted");
+  await nextTick();
+  throw new Error("text error");
+});
 </script>
 
 <style scoped>
@@ -19,4 +25,4 @@ import DragRegion from "./components/DragRegion.vue";
   background-color: var(--bg-color);
   box-shadow: -3px -2px 10px rgba(101, 101, 101, 0.2);
 }
-</style> 
+</style>
