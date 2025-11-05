@@ -18,10 +18,10 @@ interface WindowApi {
   onWindowMaximized: (callback: (isMaximized: boolean) => void) => void;
   isWindowMaximized: () => Promise<boolean>;
 
-  // setThemeMode: (mode: ThemeMode) => Promise<boolean>;
-  // getThemeMode: () => Promise<ThemeMode>;
-  // isDarkTheme: () => Promise<boolean>;
-  // onSystemThemeChange: (callback: (isDark: boolean) => void) => void;
+  setThemeMode: (mode: ThemeMode) => Promise<boolean>;
+  getThemeMode: () => Promise<ThemeMode>;
+  isDarkTheme: () => Promise<boolean>;
+  onSystemThemeChange: (callback: (isDark: boolean) => void) => void;
 
   // showContextMenu: (menuId: string, dynamicOptions?: string) => Promise<any>;
   // contextMenuItemClick: (menuId: string, cb: (id: string) => void) => void;

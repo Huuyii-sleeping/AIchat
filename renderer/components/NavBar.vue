@@ -14,12 +14,7 @@
         <li
           class="sidebar-item no-drag cursor-pointer hover:text-primary-subtle mb-5"
         >
-          <!-- <theme-switcher /> -->
-          <iconify-icon
-            icon="material-symbols:dark-mode-outline"
-            width="24"
-            height="24"
-          />
+          <theme-switcher />
         </li>
         <li
           class="sidebar-item no-drag cursor-pointer hover:text-primary-subtle"
@@ -35,6 +30,7 @@
 <script setup lang="ts">
 import DragRegion from "./DragRegion.vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
+import ThemeSwitcher from "./ThemeSwitcher.vue";
 defineOptions({ name: "NavBar" });
 const openSettingWindow = () => {};
 </script>

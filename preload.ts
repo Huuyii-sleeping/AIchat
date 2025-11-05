@@ -4,6 +4,7 @@ import { contextBridge, ipcRenderer } from "electron";
 import { IPC_EVENTS } from "./common/constants";
 
 const api: WindowApi = {
+  // 基础交互窗口操作
   closeWindow: () => ipcRenderer.send(IPC_EVENTS.CLOSE_WINDOW),
   minimizeWindow: () => ipcRenderer.send(IPC_EVENTS.MINIMIZE_WINDOW),
   maximizeWindow: () => ipcRenderer.send(IPC_EVENTS.MAXIMIZE_WINDOW),
@@ -24,6 +25,16 @@ const api: WindowApi = {
     warn: (message: string, ...meta: any[]) =>
       ipcRenderer.send(IPC_EVENTS.LOG_WARN, message, ...meta),
   },
+
+  // 主题切换操作
+  setThemeMode: (mode: ThemeMode) =>
+    ipcRenderer.invoke(IPC_EVENTS.SET_THEME_MODE, mode),
+  getThemeMode: () => ipcRenderer.invoke(IPC_EVENTS.GET_THEME_MODE),
+  isDarkTheme: () => ipcRenderer.invoke(IPC_EVENTS.IS_DARK_THEME),
+  onSystemThemeChange: (callback: (isDark: boolean) => void) =>
+    ipcRenderer.on(IPC_EVENTS.THEME_MODE_UPDATED, (_, isDark) =>
+      callback(isDark)
+    ),
 };
 
 // 挂载到window的对象上面
