@@ -1,6 +1,6 @@
 {
-  "name": "electron-demo",
-  "productName": "electron-demo",
+  "name": "xqbot",
+  "productName": "xqbot",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".vite/build/index.js",
@@ -41,6 +41,7 @@
     "@intlify/shared": "^11.1.12",
     "@vue/devtools-api": "^8.0.3",
     "@vueuse/core": "^14.0.0",
+    "electron-log": "5.4.3",
     "electron-squirrel-startup": "^1.0.1",
     "naive-ui": "^2.43.1",
     "pinia": "^3.0.3",

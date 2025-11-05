@@ -1,4 +1,5 @@
-/// main/service/WindowService.ts
+// 创建一个electron的窗口管理类
+// 负责创建，管理和控制应用程序的窗口，对直接创建窗口进行封装
 
 import type { WindowNames } from "../../common/types";
 
@@ -11,6 +12,7 @@ import {
   type IpcMainEvent,
 } from "electron";
 import { debounce } from "../../common/utils";
+import logManager from "./LogService";
 
 import path from "node:path";
 
@@ -40,6 +42,7 @@ class WindowService {
 
   private constructor() {
     this._setupIpcEvents();
+    logManager.info("WindowService intialized Successfully");
   }
 
   private _setupIpcEvents() {
@@ -56,12 +59,17 @@ class WindowService {
       return BrowserWindow.fromWebContents(e.sender)?.isMaximized() ?? false;
     };
 
+    // 事件订阅，建立通道发送消息
     ipcMain.on(IPC_EVENTS.CLOSE_WINDOW, handleCloseWindow);
     ipcMain.on(IPC_EVENTS.MINIMIZE_WINDOW, handleMinimizeWindow);
     ipcMain.on(IPC_EVENTS.MAXIMIZE_WINDOW, handleMaximizeWindow);
     ipcMain.handle(IPC_EVENTS.IS_WINDOW_MAXIMIZED, handleIsWindowMaximized);
   }
 
+  /**
+   * 单例模式。避免窗口混乱
+   * @returns
+   */
   public static getInstance(): WindowService {
     if (!this._instance) {
       this._instance = new WindowService();
@@ -69,7 +77,14 @@ class WindowService {
     return this._instance;
   }
 
+  /**
+   * 窗口的创建 并配置相关内容 对窗口进行统一的配置
+   * @param name
+   * @param size
+   * @returns
+   */
   public create(name: WindowNames, size: SizeOptions) {
+    logManager.info(`[Window] Creating window: ${name} with size:`, size);
     const window = new BrowserWindow({
       ...SHARED_WINDOW_OPTIONS,
       ...size,
@@ -79,6 +94,15 @@ class WindowService {
 
     return window;
   }
+
+  /**
+   * 窗口的声明周期管理
+   * 监听窗口的resize事件，通过防抖函数像渲染进行发送消息（避免频繁的触发）
+   * 监听close事件，窗口关闭释放资源
+   * @param window
+   * @param _name
+   * @returns
+   */
   private _setupWinLifecycle(window: BrowserWindow, _name: WindowNames) {
     const updateWinStatus = debounce(
       () =>
@@ -92,11 +116,19 @@ class WindowService {
     window.once("closed", () => {
       window?.destroy();
       window?.removeListener("resize", updateWinStatus);
+      logManager.info(`Window closed:${name}`);
     });
     window.on("resize", updateWinStatus);
+
     return this;
   }
 
+  /**
+   * 窗口内容的加载
+   * @param window
+   * @param name
+   * @returns
+   */
   private _loadWindowTemplate(window: BrowserWindow, name: WindowNames) {
     // 检查是否存在开发服务器 URL，若存在则表示处于开发环境
     // @ts-ignore
@@ -115,13 +147,21 @@ class WindowService {
     );
   }
 
+  /**
+   * 下面两个就是直接操作窗口的方法
+   * @param target
+   * @returns
+   */
   public close(target: BrowserWindow | void | null) {
     if (!target) return;
+    logManager.info(`Closing window: ${name}`);
     target?.close();
   }
 
   public toggleMax(target: BrowserWindow | void | null) {
     if (!target) return;
+    const action = target.isMaximized() ? "unmaximized" : "maximized";
+    logManager.info(`Window ${name} ${action}`);
     target.isMaximized() ? target.unmaximize() : target.maximize();
   }
 }

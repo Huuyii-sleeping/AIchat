@@ -1,5 +1,4 @@
-
-type ThemeMode = 'dark' | 'light' | 'system';
+type ThemeMode = "dark" | "light" | "system";
 
 interface CreateDialogProps {
   winId?: string;
@@ -34,12 +33,13 @@ interface WindowApi {
   // _dialogFeedback: (val: 'cancel' | 'confirm', winId: number) => void;
   // _dialogGetParams: () => Promise<CreateDialogProps>;
 
-  // logger: {
-  //   debug: (message: string, ...meta?: any[]) => void;
-  //   info: (message: string, ...meta?: any[]) => void;
-  //   warn: (message: string, ...meta?: any[]) => void;
-  //   error: (message: string, ...meta?: any[]) => void;
-  // }
+  // 日志记录相关api
+  logger: {
+    debug: (message: string, ...meta: any[]) => void;
+    info: (message: string, ...meta: any[]) => void;
+    warn: (message: string, ...meta: any[]) => void;
+    error: (message: string, ...meta: any[]) => void;
+  };
 }
 
 declare interface Window {

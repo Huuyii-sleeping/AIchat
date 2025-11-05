@@ -12,6 +12,19 @@ const api: WindowApi = {
       callback(isMaxmized)
     ),
   isWindowMaximized: () => ipcRenderer.invoke(IPC_EVENTS.IS_WINDOW_MAXIMIZED),
+
+  // 转发日志操作
+  logger: {
+    debug: (message: string, ...meta: any[]) =>
+      ipcRenderer.send(IPC_EVENTS.LOG_DEBUG, message, ...meta),
+    info: (message: string, ...meta: any[]) =>
+      ipcRenderer.send(IPC_EVENTS.LOG_INFO, message, ...meta),
+    error: (message: string, ...meta: any[]) =>
+      ipcRenderer.send(IPC_EVENTS.LOG_ERROR, message, ...meta),
+    warn: (message: string, ...meta: any[]) =>
+      ipcRenderer.send(IPC_EVENTS.LOG_WARN, message, ...meta),
+  },
 };
 
+// 挂载到window的对象上面
 contextBridge.exposeInMainWorld("api", api);
