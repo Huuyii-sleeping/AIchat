@@ -1,10 +1,13 @@
 <template>
   <n-config-provider class="h-full w-screen flex text-tx-primary">
-    <aside class="sidebar h-full flex shrink-0 flex-col w-[200px]">
-      Aside
+    <aside class="sidebar h-full flex shrink-0 flex-col w-[320px]">
+      <div class="flex-auto flex">
+        <nav-bar></nav-bar>
+        <div class="flex-auto">conversation-list</div>
+      </div>
     </aside>
     <div class="flex-auto">
-      <TitleBar> <DragRegion class="w-full"> xq </DragRegion></TitleBar>
+      <title-bar> <drag-region class="w-full"> xq </drag-region></title-bar>
       Main
     </div>
   </n-config-provider>
@@ -14,7 +17,7 @@
 import { NConfigProvider } from "naive-ui";
 import TitleBar from "./components/TitleBar.vue";
 import DragRegion from "./components/DragRegion.vue";
-
+import NavBar from "./components/NavBar.vue";
 </script>
 
 <style scoped>

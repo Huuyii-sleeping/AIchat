@@ -64,7 +64,7 @@ withDefaults(defineProps<TitleBarProps>(), {
   isMinimizable: true,
   isClosable: true,
 });
-const btnSize = 20;
+const btnSize = 25;
 const emit = defineEmits(["close"]);
 const { isMaximized, closeWindow, minimizeWindow, maximizeWindow } =
   useWinManager();
