@@ -6,9 +6,13 @@
         size="small"
         :placeholder="t('main.conversation.searchPlaceholder')"
         clearable
+        :style="{
+          backgroundColor: 'var(--input-bg)',
+          color: 'var(--text-primary)',
+        }"
       >
         <template #prefix>
-          <iconify-icon icon="Serach"></iconify-icon>
+          <iconify-icon icon="icon-park-twotone:search" :style="{ color: 'var(--text-primary)'}"></iconify-icon>
         </template>
       </n-input>
       <n-input-group-label
