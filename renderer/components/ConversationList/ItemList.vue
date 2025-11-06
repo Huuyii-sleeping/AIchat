@@ -13,19 +13,16 @@
   </div>
   <div class="w-full flex items-center">
     <!-- todo 复选框展示 -->
-    <div class="flex-auto">
-      <h2
-        class="conversation-title w-full text-tx-secondary font-semibold loading-5 truncate"
-      >
-        {{ title }}
-      </h2>
-    </div>
+    <!-- <div class="flex-auto"> -->
+    <item-title :title="title"></item-title>
   </div>
+  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
 import { Icon as IconifyIcon } from "@iconify/vue";
 import { Conversation } from "@common/types";
+import ItemTitle from "./ItemTitle.vue";
 
 defineOptions({ name: "ConversationListItem" });
 defineProps<Conversation>();

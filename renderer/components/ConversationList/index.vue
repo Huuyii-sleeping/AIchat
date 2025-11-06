@@ -21,8 +21,17 @@
 import SearchBar from "./SearchBar.vue";
 import ItemList from "./ItemList.vue";
 import { useFilter } from "./useFilter";
+import { CTX_KEY } from "./constants";
 defineOptions({ name: "ConversationList" });
 const { conversations } = useFilter();
+const props = defineProps<{
+  width: number;
+}>();
+
+// 依赖注入。便于子组件能够监听具体的操作以及数据
+provide(CTX_KEY, {
+  width: computed(() => props.width),
+});
 </script>
 
 <style scoped></style>
