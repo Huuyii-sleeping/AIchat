@@ -16,6 +16,13 @@ import logManager from "./LogService";
 import path from "node:path";
 import themeManager from "./ThemeService";
 
+interface WindowState {
+  instance: BrowserWindow | void;
+  isHidden: boolean;
+  onCreate: ((window: BrowserWindow) => void)[];
+  onClose: ((window: BrowserWindow) => void)[];
+}
+
 interface SizeOptions {
   width: number; // 窗口宽度
   height: number; // 窗口高度
@@ -41,6 +48,14 @@ const SHARED_WINDOW_OPTIONS = {
 
 class WindowService {
   private static _instance: WindowService;
+  private _winStates: Record<WindowNames | string, WindowState> = {
+    main: {
+      instance: void 0,
+      isHidden: false,
+      onClose: [],
+      onCreate: [],
+    },
+  };
 
   private constructor() {
     this._setupIpcEvents();
@@ -93,7 +108,7 @@ class WindowService {
     });
 
     this._setupWinLifecycle(window, name)._loadWindowTemplate(window, name);
-
+    this._winStates[name].onCreate.forEach((cb) => cb(window));
     return window;
   }
 
@@ -105,7 +120,7 @@ class WindowService {
    * @param _name
    * @returns
    */
-  private _setupWinLifecycle(window: BrowserWindow, _name: WindowNames) {
+  private _setupWinLifecycle(window: BrowserWindow, name: WindowNames) {
     const updateWinStatus = debounce(
       () =>
         !window?.isDestroyed() &&
@@ -116,9 +131,10 @@ class WindowService {
       80
     );
     window.once("closed", () => {
+      this._winStates[name].onClose.forEach((cb) => cb(window));
       window?.destroy();
       window?.removeListener("resize", updateWinStatus);
-      logManager.info(`Window closed`);
+      logManager.info(`Window closed: ${name}`);
     });
     window.on("resize", updateWinStatus);
 
@@ -165,6 +181,20 @@ class WindowService {
     const action = target.isMaximized() ? "unmaximized" : "maximized";
     logManager.info(`Window ${action}`);
     target.isMaximized() ? target.unmaximize() : target.maximize();
+  }
+
+  public onWindowCreate(
+    name: WindowNames,
+    callback: (window: BrowserWindow) => void
+  ) {
+    this._winStates[name].onCreate.push(callback);
+  }
+
+  public onWindowClosed(
+    name: WindowNames,
+    callback: (window: BrowserWindow) => void
+  ) {
+    this._winStates[name].onClose.push(callback);
   }
 }
 

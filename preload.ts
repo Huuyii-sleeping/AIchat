@@ -35,6 +35,16 @@ const api: WindowApi = {
     ipcRenderer.on(IPC_EVENTS.THEME_MODE_UPDATED, (_, isDark) =>
       callback(isDark)
     ),
+
+  // 菜单展示
+  showContextMenu: (menuId: string, dynamicOptions?: string) =>
+    ipcRenderer.invoke(IPC_EVENTS.SHOW_CONTEXT_MENU, menuId, dynamicOptions),
+  contextMenuItemClick: (menuId: string, cb: (id: string) => void) =>
+    ipcRenderer.on(`${IPC_EVENTS.SHOW_CONTEXT_MENU}:${menuId}`, (_, id) =>
+      cb(id)
+    ),
+  removeContextMenuListener: (menuId: string) =>
+    ipcRenderer.removeAllListeners(`${IPC_EVENTS.SHOW_CONTEXT_MENU}:${menuId}`),
 };
 
 // 挂载到window的对象上面

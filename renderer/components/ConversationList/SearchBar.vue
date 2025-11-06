@@ -12,11 +12,15 @@
         }"
       >
         <template #prefix>
-          <iconify-icon icon="icon-park-twotone:search" :style="{ color: 'var(--text-primary)'}"></iconify-icon>
+          <iconify-icon
+            icon="icon-park-twotone:search"
+            :style="{ color: 'var(--text-primary)' }"
+          ></iconify-icon>
         </template>
       </n-input>
       <n-input-group-label
         class="cursor-pointer flex justify-between items-center"
+        @click="handleListContextMenu"
       >
         <n-icon>
           <iconify-icon icon="material-symbols:menu-rounded"></iconify-icon>
@@ -30,12 +34,14 @@
 import { NInput, NInputGroup, NInputGroupLabel, NIcon } from "naive-ui";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import { useFilter } from "./useFilter";
+import { useContextMenu } from "./useContextMenu";
 defineOptions({ name: "SearchBar" });
+const { handle: handleListContextMenu } = useContextMenu();
 const { t } = useI18n();
 const { searchKey } = useFilter();
 </script>
 
-<style scoped>
+<style scoped> 
 .n-input-wrapper,
 .n-input__input {
   align-items: center;

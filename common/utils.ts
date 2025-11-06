@@ -1,4 +1,3 @@
-import type { OpenAISetting } from "./types";
 // import { encode, decode } from "js-base64";
 /**
  * 防抖函数

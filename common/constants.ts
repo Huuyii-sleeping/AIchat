@@ -9,7 +9,7 @@ export enum IPC_EVENTS {
   GET_THEME_MODE = "get-theme-mode",
   IS_DARK_THEME = "is-dark-theme",
   RENDERER_IS_READY = "renderer-ready",
-  SHOW_CONTEXT_MENU = "show-context-menu",
+  SHOW_CONTEXT_MENU = "show-context-menu", 
 
   LOG_DEBUG = "log-debug",
   LOG_INFO = "log-info",
@@ -34,12 +34,14 @@ export const MAIN_WIN_SIZE = {
   minHeight: 800,
 } as const;
 
+// 不同对话列表的菜单
 export enum MENU_IDS {
   CONVERSATION_ITEM = "conversation-item",
   CONVERSATION_LIST = "conversation-list",
   MESSAGE_ITEM = "message-item",
 }
 
+// 定义操作的ID
 export enum CONVERSATION_ITEM_MENU_IDS {
   PIN = "pin",
   RENAME = "rename",
