@@ -17,12 +17,18 @@ importers:
       '@vueuse/core':
         specifier: ^14.0.0
         version: 14.0.0(vue@3.5.22(typescript@5.9.3))
+      dexie:
+        specifier: 4.2.0
+        version: 4.2.0
       electron-log:
         specifier: 5.4.3
         version: 5.4.3
       electron-squirrel-startup:
         specifier: ^1.0.1
         version: 1.0.1
+      js-base64:
+        specifier: ^3.7.8
+        version: 3.7.8
       naive-ui:
         specifier: ^2.43.1
         version: 2.43.1(vue@3.5.22(typescript@5.9.3))
@@ -1141,6 +1147,9 @@ packages:
   detect-node@2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
 
+  dexie@4.2.0:
+    resolution: {integrity: sha512-OSeyyWOUetDy9oFWeddJgi83OnRA3hSFh3RrbltmPgqHszE9f24eUCVLI4mPg0ifsWk0lQTdnS+jyGNrPMvhDA==}
+
   dir-compare@4.2.0:
     resolution: {integrity: sha512-2xMCmOoMrdQIPHdsTawECdNPwlVFB9zGcz3kuhmBO6U3oU+UQjsue0i8ayLKpgBcm+hcXPMVSGUN9d+pvJ6+VQ==}
 
@@ -1614,6 +1623,9 @@ packages:
   jiti@2.6.1:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
+
+  js-base64@3.7.8:
+    resolution: {integrity: sha512-hNngCeKxIUQiEUN3GPJOkz4wF/YvdUdbNL9hsBcMQTkKzboD7T/q3OYOuuPZLUE6dBxSGpwhk5mwuDud7JVAow==}
 
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
@@ -3913,6 +3925,8 @@ snapshots:
   detect-node@2.1.0:
     optional: true
 
+  dexie@4.2.0: {}
+
   dir-compare@4.2.0:
     dependencies:
       minimatch: 3.1.2
@@ -4502,6 +4516,8 @@ snapshots:
   isexe@2.0.0: {}
 
   jiti@2.6.1: {}
+
+  js-base64@3.7.8: {}
 
   js-tokens@9.0.1: {}
 

@@ -1,4 +1,6 @@
-// import { encode, decode } from "js-base64";
+import { encode, decode } from "js-base64";
+import { OpenAISetting } from "./types";
+
 /**
  * 防抖函数
  * @param fn 需要执行的函数
@@ -67,20 +69,20 @@ export function simpleCloneDeep<T>(obj: T): T {
   }
 }
 
-// export function stringifyOpenAISetting(setting: OpenAISetting) {
-//   try {
-//     return encode(JSON.stringify(setting));
-//   } catch (error) {
-//     console.error("stringifyOpenAISetting failed:", error);
-//     return "";
-//   }
-// }
+export function stringifyOpenAISetting(setting: OpenAISetting) {
+  try {
+    return encode(JSON.stringify(setting));
+  } catch (error) {
+    console.error("stringifyOpenAISetting failed:", error);
+    return "";
+  }
+}
 
-// export function parseOpenAISetting(setting: string): OpenAISetting {
-//   try {
-//     return JSON.parse(decode(setting));
-//   } catch (error) {
-//     console.error("parseOpenAISetting failed:", error);
-//     return {} as OpenAISetting;
-//   }
-// }
+export function parseOpenAISetting(setting: string): OpenAISetting {
+  try {
+    return JSON.parse(decode(setting));
+  } catch (error) {
+    console.error("parseOpenAISetting failed:", error);
+    return {} as OpenAISetting;
+  }
+}

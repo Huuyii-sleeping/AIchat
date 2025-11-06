@@ -3,9 +3,8 @@ import { MENU_IDS } from "@common/constants";
 export async function createContextMenu(
   menuId: MENU_IDS,
   cb?: (id: string) => void,
-  dynamicOptions?: { label?: string; id: string; [key: string]: any }
+  dynamicOptions?: { label?: string; id: string; [key: string]: any }[]
 ) {
-  console.log("-----------:", menuId);
   let result: string = "";
   window.api.contextMenuItemClick(menuId, (id) => {
     cb?.(id);
