@@ -27,14 +27,27 @@
  */
 
 import "./styles/index.css";
-import 'vfonts/Lato.css'
+import "vfonts/Lato.css";
 
-import { createApp } from "vue";
 import App from "../renderer/App.vue";
 import i18n from "./i18n";
 import { errorHandler } from "./utils/errorHandler";
+import TitleBar from "./components/TitleBar.vue";
+import DragRegion from "./components/DragRegion.vue";
+import router from "./router";
+import { createPinia } from "pinia";
+
+const components = function (app: any) {
+  app.component("TitleBar", TitleBar);
+  app.component("DragRegion", DragRegion);
+};
+
+const pinia = createPinia();
 
 createApp(App)
+  .use(pinia)
   .use(i18n)
+  .use(components as any)
+  .use(router)
   .use(errorHandler)
   .mount("#app");

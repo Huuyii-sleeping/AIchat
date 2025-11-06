@@ -6,7 +6,7 @@
     >
       <div class="flex-auto flex">
         <nav-bar></nav-bar>
-        <div class="flex-auto">conversation-list</div>
+        <conversation-list class="flex-auto" :width="sidebarSizeWidth" />
       </div>
     </aside>
     <resize-divider
@@ -16,18 +16,16 @@
       :min-size="320"
     ></resize-divider>
     <div class="flex-auto">
-      <title-bar> <drag-region class="w-full"> xq </drag-region></title-bar>
-      Main
+      <router-view></router-view>
     </div>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
 import { NConfigProvider } from "naive-ui";
-import TitleBar from "./components/TitleBar.vue";
-import DragRegion from "./components/DragRegion.vue";
 import NavBar from "./components/NavBar.vue";
 import ResizeDivider from "./components/ResizeDivider.vue";
+import ConversationList from "./components/ConversationList/index.vue";
 
 const sidebarSizeWidth = ref(320);
 </script>

@@ -1,4 +1,4 @@
-import { WINDOW_NAMES } from './constants';
+import { WINDOW_NAMES } from "./constants";
 
 export type WindowNames = `${WINDOW_NAMES}`;
 
@@ -7,13 +7,14 @@ export interface Provider {
   name: string;
   visible?: boolean;
   title?: string;
-  type?: 'OpenAI';
+  type?: "OpenAI";
   openAISetting?: string;
   createdAt: number;
   updatedAt: number;
   models: string[];
 }
 
+// 对话框的样式
 export interface Conversation {
   id: number;
   title: string;
@@ -22,17 +23,19 @@ export interface Conversation {
   updatedAt: number;
   providerId: number;
   pinned: boolean;
-  type?: 'divider' | 'conversation';
+  // 分割线功能
+  type?: "divider" | "conversation";
 }
+// message展示的状态
+export type MessageStatus = "loading" | "streaming" | "success" | "error";
 
-export type MessageStatus = 'loading' | 'streaming' | 'success' | 'error';
 export interface Message {
   id: number;
   content: string;
-  type: 'question' | 'answer';
+  type: "question" | "answer";
   createdAt: number;
   updatedAt?: number;
-  status?: MessageStatus
+  status?: MessageStatus;
   conversationId: number;
 }
 
