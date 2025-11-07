@@ -1,6 +1,7 @@
 import type { Provider } from "@common/types";
-import { dataBase } from "@renderer/dataBase";
-export const useProviderStore = defineStore("provider", () => {
+import { dataBase } from "../dataBase";
+
+export const useProviderStore = defineStore("providers", () => {
   const providers = ref<Provider[]>([]);
 
   const allProviders = computed(() => providers.value);
@@ -10,8 +11,11 @@ export const useProviderStore = defineStore("provider", () => {
   }
 
   return {
+    // state
     providers,
+    // getters
     allProviders,
+    // actions
     initialize,
-  }
+  };
 });

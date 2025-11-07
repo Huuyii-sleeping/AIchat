@@ -2,12 +2,12 @@
   <n-select
     size="small"
     v-model:value="selectedProvider"
-    :placeholder="t('main.conversation.selectModel')"
     :options="providerOptions"
+    :placeholder="t('main.conversation.selectModel')"
   >
     <template #empty>
-      <span class="text-tx-primary text-[0.7rem]"
-        >{{ t("main.conversation.goSettings") }}
+      <span class="text-tx-primary text-[0.7rem]">
+        {{ t("main.conversation.goSettings") }}
         <n-button
           class="go-settings-btn"
           size="tiny"
@@ -21,27 +21,29 @@
 </template>
 
 <script setup lang="ts">
+import type { SelectValue } from "@renderer/types";
 import { NSelect, NButton } from "naive-ui";
-import { SelectValue } from "@renderer/types";
 import { useProviderStore } from "@renderer/stores/providers";
+
 defineOptions({ name: "ProviderSelect" });
 
 const { t } = useI18n();
-const providerStore = useProviderStore();
+
+const providersStore = useProviderStore();
 const selectedProvider = defineModel<SelectValue>("modelValue");
+
 const providerOptions = computed(() =>
-  providerStore.allProviders
-    .filter((item) => item.visible)
-    .map((item) => ({
-      label: item.title || item.name,
-      type: "group",
-      key: item.id,
-      children: item.models.map((model) => ({
-        label: model,
-        value: `${item.id}:${model}`,
-      })),
-    }))
+  providersStore.allProviders.map((item) => ({
+    label: item.title || item.name,
+    type: "group",
+    key: item.id,
+    children: item.models.map((model) => ({
+      label: model,
+      value: `${item.id}:${model}`,
+    })),
+  }))
 );
+
 function openSettingWindow() {
   // todo
 }
@@ -49,7 +51,7 @@ function openSettingWindow() {
 
 <style scoped>
 .go-settings-btn {
-  padding: 0, 0.5rem;
+  padding: 0 0.5rem;
   font-weight: bold;
 }
 </style>

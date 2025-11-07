@@ -1,11 +1,11 @@
 <template>
-  <n-config-provider class="h-full w-screen flex text-tx-primary">
+  <n-config-provider class="h-full w-[100vw] flex text-tx-primary">
     <aside
       class="sidebar h-full flex shrink-0 flex-col"
       :style="{ width: sidebarSizeWidth + 'px' }"
     >
       <div class="flex-auto flex">
-        <nav-bar></nav-bar>
+        <nav-bar />
         <conversation-list class="flex-auto" :width="sidebarSizeWidth" />
       </div>
     </aside>
@@ -14,20 +14,27 @@
       v-model:size="sidebarSizeWidth"
       :max-size="800"
       :min-size="320"
-    ></resize-divider>
+    />
     <div class="flex-auto">
-      <router-view></router-view>
+      <router-view />
     </div>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
 import { NConfigProvider } from "naive-ui";
+import { initProviders } from "./dataBase";
 import NavBar from "./components/NavBar.vue";
 import ResizeDivider from "./components/ResizeDivider.vue";
 import ConversationList from "./components/ConversationList/index.vue";
-
+import { useProviderStore } from "./stores/providers";
 const sidebarSizeWidth = ref(320);
+const providerStore = useProviderStore();
+onMounted(async () => {
+  await initProviders();
+  await providerStore.initialize();
+  console.log("App mounted");
+});
 </script>
 
 <style scoped>
