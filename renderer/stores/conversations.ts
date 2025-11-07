@@ -82,7 +82,7 @@ export const useConversationStore = defineStore("conversations", () => {
   ) {
     const _newConversation = {
       ...conversation,
-      updatdeAt: updateTime ? Date.now() : conversation.updatedAt,
+      updatedAt: updateTime ? Date.now() : conversation.updatedAt,
     };
     await dataBase.conversations.update(conversation.id, _newConversation);
     conversations.value = conversations.value.map((item) =>

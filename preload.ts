@@ -45,6 +45,8 @@ const api: WindowApi = {
     ),
   removeContextMenuListener: (menuId: string) =>
     ipcRenderer.removeAllListeners(`${IPC_EVENTS.SHOW_CONTEXT_MENU}:${menuId}`),
+
+  viewIsReady: () => ipcRenderer.send(IPC_EVENTS.RENDERER_IS_READY),
 };
 
 // 挂载到window的对象上面

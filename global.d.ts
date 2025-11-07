@@ -28,7 +28,7 @@ interface WindowApi {
   contextMenuItemClick: (menuId: string, cb: (id: string) => void) => void;
   removeContextMenuListener: (menuId: string) => void;
 
-  // viewIsReady: () => void;
+  viewIsReady: () => void;
 
   // createDialog: (params: CreateDialogProps) => Promise<string>;
   // _dialogFeedback: (val: 'cancel' | 'confirm', winId: number) => void;

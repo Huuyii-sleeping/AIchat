@@ -134,12 +134,12 @@ provide(CTX_KEY, {
 </script>
 
 <style scoped>
-::v-deep .flex-auto.overflow-auto {
+:deep .flex-auto.overflow-auto {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-::v-deep .flex-auto.overflow-auto::-webkit-scrollbar {
+:deep .flex-auto.overflow-auto::-webkit-scrollbar {
   display: none !important;
 }
 </style>
