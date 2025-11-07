@@ -28,12 +28,15 @@ import NavBar from "./components/NavBar.vue";
 import ResizeDivider from "./components/ResizeDivider.vue";
 import ConversationList from "./components/ConversationList/index.vue";
 import { useProviderStore } from "./stores/providers";
+import { useConversationStore } from "./stores/conversations";
 const sidebarSizeWidth = ref(320);
-const providerStore = useProviderStore();
+const { initialize: initializeProviderStore } = useProviderStore();
+const { initialize: initializeConversationStore } = useConversationStore();
 onMounted(async () => {
   await initProviders();
-  await providerStore.initialize();
-  console.log("App mounted");
+  await initializeProviderStore();
+  await initializeConversationStore();
+  console.info("App mounted");
 });
 </script>
 

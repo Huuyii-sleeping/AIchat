@@ -1,7 +1,4 @@
-import {
-  MENU_IDS,
-  CONVERSATION_LIST_MENU_IDS,
-} from "@common/constants";
+import { MENU_IDS, CONVERSATION_LIST_MENU_IDS } from "@common/constants";
 import { createContextMenu } from "@renderer/utils/contextMenu";
 import { useConversationStore } from "@renderer/stores/conversations";
 
@@ -17,6 +14,8 @@ const sortOrderMap = new Map([
   ["asc", CONVERSATION_LIST_MENU_IDS.SORT_ASCENDING],
 ]);
 
+const isBatchOperate = ref(false);
+
 export function useContextMenu() {
   const router = useRouter();
   const route = useRoute();
@@ -27,7 +26,7 @@ export function useContextMenu() {
     [
       CONVERSATION_LIST_MENU_IDS.BATCH_OPERATIONS,
       () => {
-        console.log("batch operations");
+        isBatchOperate.value = !isBatchOperate.value;
       },
     ],
     [
@@ -84,5 +83,6 @@ export function useContextMenu() {
 
   return {
     handle,
+    isBatchOperate,
   };
 }
