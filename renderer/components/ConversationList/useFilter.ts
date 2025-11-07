@@ -9,7 +9,6 @@ export function useFilter() {
   const conversationStore = useConversationStore();
   const sortedConversations = computed(() => {
     const { sortBy, sortOrder } = conversationStore.sortMode;
-
     const divider = Object.freeze({
       type: "divider",
       id: -1,
@@ -65,7 +64,7 @@ export function useFilter() {
   });
 
   const filterConversation = computed(() => {
-    if (!_searchKey.value) return sortedConversations;
+    if (!_searchKey.value) return sortedConversations.value;
     return sortedConversations.value.filter(
       (item) => item?.title && item?.title.includes(_searchKey.value)
     );
