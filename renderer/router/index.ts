@@ -6,9 +6,19 @@ const router = createRouter({
     {
       path: "/",
       component: () => import("../views/index.vue"),
+      children: [
+        {
+          path: "/",
+          redirect: "conversation",
+        },
+        {
+          name: 'conversation',
+          path: 'conversation/:id?',
+          component: () => import('../views/conversation.vue')
+        },
+      ],
     },
   ],
 });
 
-
-export default router
+export default router;

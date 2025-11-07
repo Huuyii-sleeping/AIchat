@@ -13,10 +13,10 @@
           @click="minimizeWindow"
         >
           <iconify-icon
-            icon="codicon:chrome-minimize"
+            icon="material-symbols:chrome-minimize-sharp"
             :width="btnSize"
             :height="btnSize"
-          ></iconify-icon>
+          />
         </button>
       </native-tooltip>
       <native-tooltip :content="t('window.maximize')">
@@ -26,27 +26,27 @@
           @click="maximizeWindow"
         >
           <iconify-icon
-            icon="codicon:chrome-maximize"
+            icon="material-symbols:chrome-maximize-outline-sharp"
             :width="btnSize"
             :height="btnSize"
             v-show="!isMaximized"
-          ></iconify-icon>
+          />
           <iconify-icon
-            icon="codicon:chrome-restore"
+            icon="material-symbols:chrome-restore-outline-sharp"
             :width="btnSize"
             :height="btnSize"
             v-show="isMaximized"
-          ></iconify-icon>
+          />
         </button>
       </native-tooltip>
       <native-tooltip :content="t('window.close')">
         <button
           v-show="isClosable"
-          class="title-bar-button cursor-pointer hover:bg-red-300 close-button"
+          class="close-button title-bar-button cursor-pointer hover:bg-red-300"
           @click="handleClose"
         >
           <iconify-icon
-            icon="codicon:chrome-close"
+            icon="material-symbols:close"
             :width="btnSize"
             :height="btnSize"
           ></iconify-icon>
@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import { Icon as IconifyIcon } from "@iconify/vue";
-import { useWinManager } from "@renderer/hooks/useWindowManager";
+import useWinManager from "@renderer/hooks/useWindowManager";
 
 import NativeTooltip from "./NativeTooltip.vue";
 
@@ -74,11 +74,14 @@ withDefaults(defineProps<TitleBarProps>(), {
   isMinimizable: true,
   isClosable: true,
 });
-const btnSize = 20;
-const { t } = useI18n();
 const emit = defineEmits(["close"]);
+const { t } = useI18n();
+
+const btnSize = 15;
+
 const { isMaximized, closeWindow, minimizeWindow, maximizeWindow } =
   useWinManager();
+
 function handleClose() {
   emit("close");
   closeWindow();
@@ -89,6 +92,6 @@ function handleClose() {
 .title-bar-button {
   padding: 2px;
   border-radius: 50%;
-  margin: 1rem;
+  margin: 0.2rem;
 }
 </style>

@@ -2,6 +2,7 @@
   <div
     class="conversation-list px-2 pt-3 h-screen flex flex-col overflow-hidden"
     @contextmenu.prevent.stop="handleListContextMenu"
+    @click="handleClickOutItem"
   >
     <search-bar class="mt-3"></search-bar>
     <ul class="flex-auto overflow-auto">
@@ -10,6 +11,7 @@
           v-if="item.type !== 'divider'"
           class="cursor-pointer p-2 mt-2 rounded-md hover:bg-input flex flex-col items-start gap-2"
           @contextmenu.prevent.stop="handleItemContextMenu(item)"
+          @click.stop="handleItemClick(item)"
         >
           <item-list v-bind="item" @update-title="updateTitle"></item-list>
         </li>
@@ -156,6 +158,15 @@ function handleAllSelectedChange(checked: boolean) {
   checkedIds.value = checked
     ? conversations.value.map((item: any) => item.id)
     : [];
+}
+
+function handleItemClick(item: Conversation) {
+  const { id } = item;
+  router.push(`/conversation/${id}`);
+}
+
+function handleClickOutItem() {
+  router.push("/conversation");
 }
 
 // 依赖注入。便于子组件能够监听具体的操作以及数据
