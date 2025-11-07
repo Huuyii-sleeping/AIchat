@@ -34,7 +34,7 @@ defineOptions({ name: "ConversationList" });
 const props = defineProps<{
   width: number;
 }>();
-const { conversations } = useFilter();
+const { conversations } = useFilter() as any;
 const { handle: handleListContextMenu } = useContextMenu();
 const conversationStore = useConversationStore();
 const conversationItemActionPolicy = new Map([

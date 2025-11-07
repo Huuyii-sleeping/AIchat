@@ -1,5 +1,5 @@
 <template>
-  <n-config-provider class="h-full w-[100vw] flex text-tx-primary">
+  <n-config-provider class="h-full w-screen flex text-tx-primary">
     <aside
       class="sidebar h-full flex shrink-0 flex-col"
       :style="{ width: sidebarSizeWidth + 'px' }"
