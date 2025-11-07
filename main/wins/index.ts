@@ -1,5 +1,6 @@
 import { setupMainWindow } from "./main";
-
-export function setupWindows(){
-    setupMainWindow()
+import { setupDialogWindow } from "./dialog";
+export function setupWindows() {
+  setupMainWindow();
+  setupDialogWindow();
 }

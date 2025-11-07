@@ -59,7 +59,7 @@ export const providers: Provider[] = [
 export const dataBase = new Dexie("xqbot") as Dexie & {
   providers: EntityTable<Provider, "id">;
   conversations: EntityTable<Conversation, "id">;
-  message: EntityTable<Message, "id">;
+  messages: EntityTable<Message, "id">;
 };
 
 dataBase.version(1).stores({

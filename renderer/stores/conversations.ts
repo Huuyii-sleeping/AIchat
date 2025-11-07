@@ -32,13 +32,13 @@ export const useConversationStore = defineStore("conversations", () => {
   async function initialize() {
     conversations.value = await dataBase.conversations.toArray();
 
-    // 清除无用的message
+    // 清除无用的messages
     const ids = conversations.value.map((item) => item.id);
-    const msgs = await dataBase.message.toArray();
+    const msgs = await dataBase.messages.toArray();
     const invalidId = msgs
       .filter((item) => !ids.includes(item.conversationId))
       .map((item) => item.id);
-    invalidId.length && dataBase.message.where("id").anyOf(invalidId).delete();
+    invalidId.length && dataBase.messages.where("id").anyOf(invalidId).delete();
   }
 
   function setSortMode(_sortBy: SortBy, _sortOrder: SortOrder) {
@@ -71,7 +71,7 @@ export const useConversationStore = defineStore("conversations", () => {
   }
 
   async function deleteConversation(id: number) {
-    await dataBase.message.where("conversationId").equals(id).delete();
+    await dataBase.messages.where("conversationId").equals(id).delete();
     await dataBase.conversations.delete(id);
     conversations.value = conversations.value.filter((item) => item.id !== id);
   }

@@ -30,9 +30,10 @@ interface WindowApi {
 
   viewIsReady: () => void;
 
-  // createDialog: (params: CreateDialogProps) => Promise<string>;
-  // _dialogFeedback: (val: 'cancel' | 'confirm', winId: number) => void;
-  // _dialogGetParams: () => Promise<CreateDialogProps>;
+  // 创建别的窗口的函数
+  createDialog: (params: CreateDialogProps) => Promise<string>;
+  _dialogFeedback: (val: 'cancel' | 'confirm', winId: number) => void;
+  _dialogGetParams: () => Promise<CreateDialogProps>;
 
   // 日志记录相关api
   logger: {

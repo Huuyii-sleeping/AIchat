@@ -32,6 +32,7 @@ import ItemList from "./ItemList.vue";
 import { useFilter } from "./useFilter";
 import { CTX_KEY } from "./constants";
 import { useContextMenu } from "./useContextMenu";
+import { useDialog } from "@renderer/hooks/useDialog";
 import { Conversation } from "@common/types";
 import { useConversationStore } from "@renderer/stores/conversations";
 import { createContextMenu } from "@renderer/utils/contextMenu";
@@ -44,13 +45,26 @@ const props = defineProps<{
 const { conversations } = useFilter() as any;
 const { handle: handleListContextMenu, isBatchOperate } = useContextMenu();
 const conversationStore = useConversationStore();
+const { createDialog } = useDialog();
 const editId = ref<number | void>();
 const checkedIds = ref<number[]>([]);
+const router = useRouter();
+const route = useRoute();
+
+const currentId = computed(() => Number(route.params.id));
+
 const conversationItemActionPolicy = new Map([
   [
     CONVERSATION_ITEM_MENU_IDS.DEL,
-    async () => {
-      console.log("item delete");
+    async (item: Conversation) => {
+      const res = await createDialog({
+        title: "main.conversation.dialog.title",
+        content: "main.conversation.dialog.content",
+      });
+      if (res === "confirm") {
+        conversationStore.deleteConversation(item.id);
+        item.id === currentId.value && router.push("/conversation");
+      }
     },
   ],
   [
@@ -75,7 +89,18 @@ const batchActionPolicy = new Map([
   [
     CONVERSATION_ITEM_MENU_IDS.DEL,
     async () => {
-      console.log("delete op");
+      const res = await createDialog({
+        title: "main.conversation.dialog.title",
+        content: "main.conversation.dialog.content_1",
+      });
+      if (res !== "confirm") return;
+      if (checkedIds.value.includes(currentId.value)) {
+        router.push("/conversation");
+      }
+      checkedIds.value.forEach((id) =>
+        conversationStore.deleteConversation(id)
+      );
+      isBatchOperate.value = false;
     },
   ],
   [
