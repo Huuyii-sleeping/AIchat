@@ -25,8 +25,7 @@
   </div>
   <div class="h-full flex flex-col" v-else>
     <div class="w-full min-h-0" :style="{ height: `${listHeight}px` }">
-      <!-- <message-list :messages="message" /> -->
-      message-list
+      <message-list :messages="messages" />
     </div>
     <div
       class="input-container bg-bubble-others flex-auto w-[calc(100% + 10px)] ml-[-5px]"
@@ -52,6 +51,8 @@ import { SelectValue } from "@renderer/types";
 import CreateConversation from "@renderer/components/CreateConversation.vue";
 import MessageInput from "@renderer/components/MessageInput.vue";
 import ResizeDivider from "@renderer/components/ResizeDivider.vue";
+import MessageList from "@renderer/components/MessageList.vue";
+import { messages } from "@renderer/testData";
 
 const router = useRouter();
 const route = useRoute();
