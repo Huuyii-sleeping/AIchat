@@ -49,7 +49,7 @@ class LogService {
     // 设置IPC事件
     this._setupIpcEvents();
     // 重写console方法 直接调用方法
-    this._rewriteConsole()
+    this._rewriteConsole();
 
     this.info("LogService intialized Successfully");
 
@@ -73,12 +73,12 @@ class LogService {
     });
   }
 
-  private _rewriteConsole(){
-    console.debug = log.debug
-    console.log = log.info
-    console.info = log.info
-    console.warn = log.warn
-    console.error = log.error
+  private _rewriteConsole() {
+    console.debug = log.debug;
+    console.log = log.info;
+    console.info = log.info;
+    console.warn = log.warn;
+    console.error = log.error;
   }
 
   private async _cleanoldLogs() {
@@ -155,6 +155,33 @@ class LogService {
    */
   public error(message: string, ...meta: any[]): void {
     log.error(message, ...meta);
+  }
+
+  public logApiRequest(
+    endpoint: string,
+    data: any = {},
+    method: string = "POST"
+  ): void {
+    this.info(
+      `API Request: ${endpoint}, Method: ${method}, Request: ${JSON.stringify(data)}`
+    );
+  }
+
+  public logApiResponse(
+    endpoint: string,
+    response: any = {},
+    statusCode: number = 200,
+    responseTime: number = 0
+  ): void {
+    if (statusCode >= 400) {
+      this.error(
+        `API Error Response: ${endpoint}, Status: ${statusCode}, Response Time: ${responseTime}ms, Response: ${JSON.stringify(response)}`
+      );
+    } else {
+      this.debug(
+        `API Response: ${endpoint}, Status: ${statusCode}, Response Time: ${responseTime}ms, Response: ${JSON.stringify(response)}`
+      );
+    }
   }
 
   public logUserOperation(
