@@ -53,9 +53,11 @@ import MessageInput from "@renderer/components/MessageInput.vue";
 import ResizeDivider from "@renderer/components/ResizeDivider.vue";
 import MessageList from "@renderer/components/MessageList.vue";
 import { messages } from "@renderer/testData";
+import { useMessageStore } from "@renderer/stores/messages";
 
 const router = useRouter();
 const route = useRoute();
+const messageStore = useMessageStore();
 const { t } = useI18n();
 const listHeight = ref(0);
 const listScale = ref(0.7);
@@ -104,6 +106,12 @@ window.onresize = throttle(async () => {
 onMounted(async () => {
   await nextTick();
   listHeight.value = window.innerHeight * listScale.value;
+});
+
+onBeforeRouteUpdate(async (to, from, next) => {
+  if (to.params.id === from.params.id) return next();
+  await messageStore.initialize(Number(to.params.id));
+  next();
 });
 
 watch(
