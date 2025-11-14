@@ -25,7 +25,11 @@
   </div>
   <div class="h-full flex flex-col" v-else>
     <div class="w-full min-h-0" :style="{ height: `${listHeight}px` }">
-      <message-list :messages="messages" />
+      <message-list
+        :messages="
+          messageStore.messagesByConversationId(conversationId as number)
+        "
+      />
     </div>
     <div
       class="input-container bg-bubble-others flex-auto w-[calc(100% + 10px)] ml-[-5px]"
@@ -52,12 +56,16 @@ import CreateConversation from "@renderer/components/CreateConversation.vue";
 import MessageInput from "@renderer/components/MessageInput.vue";
 import ResizeDivider from "@renderer/components/ResizeDivider.vue";
 import MessageList from "@renderer/components/MessageList.vue";
-import { messages } from "@renderer/testData";
 import { useMessageStore } from "@renderer/stores/messages";
+import { useConversationStore } from "@renderer/stores/conversations";
+import { useProviderStore } from "@renderer/stores/providers";
+import { messages } from "@renderer/testData";
 
 const router = useRouter();
 const route = useRoute();
+const conversationStore = useConversationStore();
 const messageStore = useMessageStore();
+const providerStore = useProviderStore();
 const { t } = useI18n();
 const listHeight = ref(0);
 const listScale = ref(0.7);
@@ -87,11 +95,16 @@ async function handleCreateConversation(
   afterCreateConversation(id, _message);
 }
 
-function afterCreateConversation(id: number, _firstMsg: string) {
+function afterCreateConversation(id: number, firstMsg: string) {
   if (!id) return;
   router.push(`/conversation/${id}`);
-  // todo 展示第一条消息
+  messageStore.sendMessage({
+    type: "question",
+    content: firstMsg,
+    conversationId: id,
+  });
   message.value = "";
+  // conversationStore.setSortMode
 }
 
 window.onresize = throttle(async () => {

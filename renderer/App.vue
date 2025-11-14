@@ -44,5 +44,6 @@ onMounted(async () => {
 .sidebar {
   background-color: var(--bg-color);
   box-shadow: -3px -2px 10px rgba(101, 101, 101, 0.2);
+  z-index: 100;
 }
 </style>

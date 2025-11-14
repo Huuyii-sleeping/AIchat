@@ -71,6 +71,24 @@ const api: WindowApi = {
     ipcRenderer.invoke(
       WINDOW_NAMES.DIALOG + "get-params"
     ) as Promise<CreateDialogProps>,
+
+  startADialogue: (params: CreateDialogueProps) =>
+    ipcRenderer.send(IPC_EVENTS.START_A_DIALOG, params),
+  onDialogueBack: (
+    cb: (data: DialogueBackStream) => void,
+    messageId: number
+  ) => {
+    const callback = (
+      _event: Electron.IpcRendererEvent,
+      data: DialogueBackStream
+    ) => cb(data);
+    ipcRenderer.on(IPC_EVENTS.START_A_DIALOG + "back" + messageId, callback);
+    return () =>
+      ipcRenderer.removeListener(
+        IPC_EVENTS.START_A_DIALOG + "back" + messageId,
+        callback
+      );
+  },
 };
 
 // 挂载到window的对象上面
