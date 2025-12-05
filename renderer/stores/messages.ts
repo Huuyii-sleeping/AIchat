@@ -4,13 +4,35 @@ import { cloneDeep, uniqueByKey } from "@common/utils";
 import { useConversationStore } from "./conversations";
 import { useProviderStore } from "./providers";
 import { listenDialogueBack } from "@renderer/utils/dialogue";
+import i18n from "@renderer/i18n";
 
 const messageContenetMap = new Map<number, string>();
 export const stopMethods = new Map<number, () => void>();
 
 export const useMessageStore = defineStore("message", () => {
   const messages = ref<Message[]>([]);
+  const messagesInputValue = ref(new Map());
+
+  // 存储所有的信息
   const allMessages = computed(() => messages.value);
+
+  // 存储输入框绑定id
+  const messageInputValueById = computed(
+    () => (conversationId: number) =>
+      messagesInputValue.value.get(conversationId) ?? ""
+  );
+
+  const loadingMsgIdsByConversationId = computed(
+    () => (conversationId: number) =>
+      messagesByConversationId
+        .value(conversationId)
+        .filter(
+          (message) =>
+            message.status === "loading" || message.status === "streaming"
+        )
+        .map((message) => message.id)
+  );
+
   const messagesByConversationId = computed(() => (conversationId: number) => {
     return messages.value
       .filter((message) => message.conversationId === conversationId)
@@ -29,6 +51,11 @@ export const useMessageStore = defineStore("message", () => {
     if (isConversationLoaded) return;
     const saved = await dataBase.messages.where({ conversationId }).toArray();
     messages.value = uniqueByKey([...messages.value, ...saved], "id");
+    2;
+  }
+
+  function setMessageInputValue(conversationId: number, value: string) {
+    messagesInputValue.value.set(conversationId, value);
   }
 
   const _updateConversation = async (conversationId: number) => {
@@ -134,9 +161,27 @@ export const useMessageStore = defineStore("message", () => {
     );
   }
 
+  async function stopMessage(id: number, update: boolean = true) {
+    const stop = stopMethods.get(id);
+    stop && stop?.();
+    if (update) {
+      const msgContent =
+        messages.value.find((message) => message.id === id)?.content || "";
+      await updateMessage(id, {
+        status: "success",
+        updatedAt: Date.now(),
+        content: msgContent
+          ? msgContent + i18n.global.t("main.message.stoppedGeneration")
+          : void 0,
+      });
+    }
+    stopMethods.delete(id);
+  }
+
   async function deleteMessage(id: number) {
     let currentMsg = cloneDeep(messages.value.find((item) => item.id === id));
     // TODO stop 当大模型回复的时候需要stop
+    stopMessage(id, false);
     await dataBase.messages.delete(id);
     currentMsg && _updateConversation(currentMsg.conversationId);
     messages.value = messages.value.filter((messages) => messages.id !== id);
@@ -145,12 +190,17 @@ export const useMessageStore = defineStore("message", () => {
 
   return {
     messages,
+    messagesInputValue,
     allMessages,
     messagesByConversationId,
+    messageInputValueById,
+    loadingMsgIdsByConversationId,
+    setMessageInputValue,
     initialize,
     addMessage,
     sendMessage,
     updateMessage,
     deleteMessage,
+    stopMessage,
   };
 });

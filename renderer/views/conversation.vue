@@ -41,8 +41,18 @@
         :min-size="100"
       />
       <message-input
+        class="p-2 pt-0"
+        ref="msgInputRef"
+        :message="messageStore.messageInputValueById(conversationId ?? -1)"
+        :status="messageinputStatus"
         v-model:provider="provider"
         :placeholder="$t('main.conversation.placeholder')"
+        @update:message="
+          messageStore.setMessageInputValue(conversationId ?? -1, $event)
+        "
+        @send="handleSendMessage"
+        @select="handleProviderSelect"
+        @stop="handleStopMessage"
       />
     </div>
   </div>
@@ -59,7 +69,6 @@ import MessageList from "@renderer/components/MessageList.vue";
 import { useMessageStore } from "@renderer/stores/messages";
 import { useConversationStore } from "@renderer/stores/conversations";
 import { useProviderStore } from "@renderer/stores/providers";
-import { messages } from "@renderer/testData";
 
 const router = useRouter();
 const route = useRoute();
@@ -73,9 +82,11 @@ const maxListHeight = ref(window.innerHeight * 0.7);
 const isStoping = ref(false);
 const message = ref("");
 const provider = ref<SelectValue>();
-const msgInputRef = useTemplateRef<{ selectProvider: SelectValue }>(
+const msgInputRef = useTemplateRef<{ selectedProvider: SelectValue }>(
   "msgInputRef"
 );
+const canUpdateConversationTime = ref(true);
+
 const providerId = computed(
   () => (provider.value as string)?.split(":")[0] ?? ""
 );
@@ -83,8 +94,21 @@ const selectedModel = computed(
   () => (provider.value as string)?.split(":")[1] ?? ""
 );
 const conversationId = computed(
-  () => Number(route.params.id) as Number | undefined
+  () => Number(route.params.id) as undefined | number
 );
+
+const messageinputStatus = computed(() => {
+  if (isStoping.value) return "loading";
+  const messages = messageStore.messagesByConversationId(
+    conversationId.value as number
+  );
+  const last = messages[messages.length - 1];
+  if (last?.status === "streaming" && last?.content?.length === 0)
+    return "loading";
+  if (last?.status === "loading" || last?.status === "streaming")
+    return last?.status;
+  return "normal";
+});
 
 async function handleCreateConversation(
   create: (title: string) => Promise<number | void>,
@@ -93,6 +117,46 @@ async function handleCreateConversation(
   const id = await create(_message);
   if (!id) return;
   afterCreateConversation(id, _message);
+}
+
+async function handleSendMessage() {
+  if (!conversationId.value) return;
+  const _conversationId = conversationId.value;
+  const content = messageStore.messageInputValueById(_conversationId);
+  if (!content?.trim()?.length) return;
+  messageStore.sendMessage({
+    type: "question",
+    content,
+    conversationId: _conversationId,
+  });
+  messageStore.setMessageInputValue(_conversationId, "");
+}
+
+async function handleStopMessage() {
+  isStoping.value = true;
+  const msgIds = messageStore.loadingMsgIdsByConversationId(
+    (conversationId.value as number) ?? -1
+  );
+
+  for (const id of msgIds) {
+    messageStore.stopMessage(id);
+  }
+  isStoping.value = false;
+}
+
+function handleProviderSelect() {
+  if (!conversationId.value) return;
+  const current = conversationStore.getConversationById(conversationId.value);
+  if (!current) return;
+  // 触发模型的变化
+  conversationStore.updateConversation(
+    {
+      ...current,
+      providerId: Number(providerId.value),
+      selectedModel: selectedModel.value,
+    },
+    canUpdateConversationTime.value
+  );
 }
 
 function afterCreateConversation(id: number, firstMsg: string) {
@@ -104,7 +168,7 @@ function afterCreateConversation(id: number, firstMsg: string) {
     conversationId: id,
   });
   message.value = "";
-  // conversationStore.setSortMode
+  messageStore.setMessageInputValue(id, "");
 }
 
 window.onresize = throttle(async () => {
@@ -130,6 +194,26 @@ onBeforeRouteUpdate(async (to, from, next) => {
 watch(
   () => listHeight.value,
   () => (listScale.value = listHeight.value / window.innerHeight)
+);
+
+watch(
+  [() => conversationId.value, () => msgInputRef.value],
+  async ([id, msgInput]) => {
+    console.log(id, msgInput);
+    if (!msgInput || !id) {
+      // TODO: 默认模型
+      return;
+    }
+
+    const current = conversationStore.getConversationById(id);
+    if (!current) return;
+    canUpdateConversationTime.value = false;
+    msgInput.selectedProvider = `${current.providerId}:${current.selectedModel}`;
+    await nextTick();
+    canUpdateConversationTime.value = true;
+
+    message.value = "";
+  }
 );
 </script>
 
