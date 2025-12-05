@@ -24,7 +24,7 @@
               }"
             >
               <!-- todo timeAgo -->
-              {{ message.createdAt }}
+              {{ formatTimeAgo(message.createdAt) }}
             </div>
             <div
               class="key-shadow p-2 rounded-md bg-bubble-self text-white"
@@ -66,10 +66,61 @@
 import { NScrollbar } from "naive-ui";
 import type { Message } from "@common/types";
 import MessageRender from "./MessageRender.vue";
+import { useBatchTimeAgo } from "@renderer/hooks/useTimeAgo";
 defineOptions({ name: "MessageList" });
-defineProps<{
+const props = defineProps<{
   messages: Message[];
 }>();
+const { formatTimeAgo } = useBatchTimeAgo();
+const MESSAGE_LIST_CLASS_NAME = "message-list";
+const SCROLLBAR_CONTENT_CLASS_NAME = "n-scrollbar-content";
+const route = useRoute();
+
+function _getScrollDOM() {
+  const messageListDOM = document.getElementsByClassName(
+    MESSAGE_LIST_CLASS_NAME
+  )[0];
+  if (!messageListDOM) {
+    return;
+  }
+  return messageListDOM.getElementsByClassName(SCROLLBAR_CONTENT_CLASS_NAME)[0];
+}
+
+async function scrollToBottom(
+  behavior: ScrollIntoViewOptions["behavior"] = "smooth"
+) {
+  await nextTick();
+  const scrollDOM = _getScrollDOM();
+  if (!scrollDOM) return;
+  scrollDOM.scrollIntoView({
+    behavior,
+    block: "end",
+  });
+}
+
+let currentHeight = 0;
+watch([() => route.params.id, () => props.messages.length], () => {
+  scrollToBottom("instant");
+  currentHeight = 0;
+});
+
+watch(
+  () => props.messages[props.messages.length - 1]?.content?.length,
+  () => {
+    const scrollDOM = _getScrollDOM();
+    if (!scrollDOM) return;
+    const height = scrollDOM.scrollHeight;
+    if (height > currentHeight) {
+      currentHeight = height;
+      scrollToBottom();
+    }
+  },
+  { immediate: true, deep: true }
+);
+
+onMounted(() => {
+  scrollToBottom("instant");
+});
 </script>
 <style scoped>
 .msg-shadow {
