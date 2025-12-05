@@ -199,7 +199,6 @@ watch(
 watch(
   [() => conversationId.value, () => msgInputRef.value],
   async ([id, msgInput]) => {
-    console.log(id, msgInput);
     if (!msgInput || !id) {
       // TODO: 默认模型
       return;
@@ -208,7 +207,7 @@ watch(
     const current = conversationStore.getConversationById(id);
     if (!current) return;
     canUpdateConversationTime.value = false;
-    msgInput.selectedProvider = `${current.providerId}:${current.selectedModel}`;
+    provider.value = `${current.providerId}:${current.selectedModel}`;
     await nextTick();
     canUpdateConversationTime.value = true;
 
