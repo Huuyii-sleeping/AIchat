@@ -32,6 +32,9 @@ importers:
       js-base64:
         specifier: ^3.7.8
         version: 3.7.8
+      markdown-it-highlightjs:
+        specifier: 4.2.0
+        version: 4.2.0
       naive-ui:
         specifier: ^2.43.1
         version: 2.43.1(vue@3.5.22(typescript@5.9.3))
@@ -93,6 +96,9 @@ importers:
       '@iconify/vue':
         specifier: 5.0.0
         version: 5.0.0(vue@3.5.22(typescript@5.9.3))
+      '@tailwindcss/typography':
+        specifier: 0.5.17
+        version: 0.5.17(tailwindcss@4.1.16)
       '@tailwindcss/vite':
         specifier: ^4.1.11
         version: 4.1.16(vite@6.4.1(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2))
@@ -724,6 +730,11 @@ packages:
     resolution: {integrity: sha512-2OSv52FRuhdlgyOQqgtQHuCgXnS8nFSYRp2tJ+4WZXKgTxqPy7SMSls8c3mPT5pkZ17SBToGM5LHEJBO7miEdg==}
     engines: {node: '>= 10'}
 
+  '@tailwindcss/typography@0.5.17':
+    resolution: {integrity: sha512-Ll/jGz1flUVaSxK/Y7OqT+kHOhrbDpSXpAszhEBCE82yTcs47bJJLI0MB5Peoh9TgBOMUjJpsGez9MECzXLw9Q==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
+
   '@tailwindcss/vite@4.1.16':
     resolution: {integrity: sha512-bbguNBcDxsRmi9nnlWJxhfDWamY3lmcyACHcdO1crxfzuLpOhHLLtEIN/nCbbAtj5rchUgQD17QVAKi1f7IsKg==}
     peerDependencies:
@@ -1093,6 +1104,11 @@ packages:
 
   css-render@0.15.14:
     resolution: {integrity: sha512-9nF4PdUle+5ta4W5SyZdLCCmFd37uVimSjg1evcTqKJCyvCEEj12WKzOSBNak6r4im4J4iYXKH1OWpUV5LBYFg==}
+
+  cssesc@3.0.0:
+    resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
+    engines: {node: '>=4'}
+    hasBin: true
 
   csstype@3.0.11:
     resolution: {integrity: sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==}
@@ -1795,6 +1811,9 @@ packages:
     resolution: {integrity: sha512-bJzx6nMoP6PDLPBFmg7+xRKeFZvFboMrGlxmNj9ClvX53KrmvM5bXFXEWjbz4cz1AFn+jWJ9z/DJSz7hrs0w3w==}
     engines: {node: '>=6'}
 
+  markdown-it-highlightjs@4.2.0:
+    resolution: {integrity: sha512-NC7pXE8KkOl6xWJVRNt8p6wgJVznXKsE0HgYGdk6DD2tn1l4L9f0ALf3VIoGVkotNU1uGQatSxfBF1zZPUMmuQ==}
+
   markdown-it@14.1.0:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
     hasBin: true
@@ -2144,6 +2163,10 @@ packages:
   plist@3.1.0:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
+
+  postcss-selector-parser@6.0.10:
+    resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
+    engines: {node: '>=4'}
 
   postcss@8.5.6:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
@@ -3500,6 +3523,11 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.16
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.16
 
+  '@tailwindcss/typography@0.5.17(tailwindcss@4.1.16)':
+    dependencies:
+      postcss-selector-parser: 6.0.10
+      tailwindcss: 4.1.16
+
   '@tailwindcss/vite@4.1.16(vite@6.4.1(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2))':
     dependencies:
       '@tailwindcss/node': 4.1.16
@@ -3925,6 +3953,8 @@ snapshots:
     dependencies:
       '@emotion/hash': 0.8.0
       csstype: 3.0.11
+
+  cssesc@3.0.0: {}
 
   csstype@3.0.11: {}
 
@@ -4733,6 +4763,10 @@ snapshots:
     dependencies:
       p-defer: 1.0.0
 
+  markdown-it-highlightjs@4.2.0:
+    dependencies:
+      highlight.js: 11.11.1
+
   markdown-it@14.1.0:
     dependencies:
       argparse: 2.0.1
@@ -5046,6 +5080,11 @@ snapshots:
       '@xmldom/xmldom': 0.8.11
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
+
+  postcss-selector-parser@6.0.10:
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
 
   postcss@8.5.6:
     dependencies:

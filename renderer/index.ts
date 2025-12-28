@@ -36,6 +36,10 @@ import TitleBar from "./components/TitleBar.vue";
 import DragRegion from "./components/DragRegion.vue";
 import router from "./router";
 import { createPinia } from "pinia";
+import hljs from "highlight.js/lib/core";
+import xml from "highlight.js/lib/languages/xml";
+
+hljs.registerLanguage("vue", xml);
 
 const components = function (app: any) {
   app.component("TitleBar", TitleBar);

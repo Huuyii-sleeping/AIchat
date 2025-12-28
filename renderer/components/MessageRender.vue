@@ -1,12 +1,18 @@
 <template>
-  <template v-if="content?.trim().length">
-    <VueMarkdown :id="renderId" :source="content"></VueMarkdown>
+  <template v-if="content?.trim()?.length">
+    <VueMarkdown
+      :id="renderId"
+      class="prose dark:prose-invert prose-slate prose-pre:p-0 prose-headings:pt-3 text-inherit"
+      :source="content"
+      :plugins="[markdownItHighlightjs]"
+    />
   </template>
-  <span v-else class="_cursor">{{ t("main.message.rendering") }}</span>
+  <span class="_cursor" v-else>{{ t("main.message.rendering") }}</span>
 </template>
 
 <script setup lang="ts">
 import VueMarkdown from "vue-markdown-render";
+import markdownItHighlightjs from "markdown-it-highlightjs";
 defineOptions({ name: "messageRender" });
 const props = defineProps<{
   msgId: number;
@@ -71,33 +77,24 @@ watch(
 );
 </script>
 
+<style scoped>
+.prose {
+  font-size: inherit;
+}
+</style>
+
 <style>
 ._cursor::after {
   content: "";
   display: inline-block;
-  width: 2px; 
+  width: 0.5em;
   height: 1.2em;
+  transform: translateX(0.6em);
   background-color: currentColor;
   animation: cursor-blink 1s infinite;
-  transform: none;
-  margin-left: 1px;
-  vertical-align: middle; 
-  line-height: inherit; 
-  position: relative;
-  z-index: 1;
-}
-
-div._cursor::after,
-p._cursor::after,
-li._cursor::after {
-  height: 1em; 
   margin-left: 2px;
-}
-
-/* 针对代码块的兼容 */
-pre._cursor::after {
-  height: 1.4em;
-  background-color: #fff; 
+  vertical-align: text-bottom;
+  line-height: 1;
 }
 
 @keyframes cursor-blink {
@@ -105,6 +102,7 @@ pre._cursor::after {
   49% {
     opacity: 1;
   }
+
   50%,
   100% {
     opacity: 0;
