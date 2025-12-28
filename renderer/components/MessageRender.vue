@@ -27,6 +27,10 @@ const findLastElement = (target: HTMLElement): Element | void => {
   if (!target) return;
   let lastElement: Element | void = target.lastElementChild ?? target;
   // todo PRE(代码块处理)
+  if (lastElement && lastElement.tagName === "PRE") {
+    lastElement = lastElement.getElementsByClassName("hljs")[0] ?? lastElement;
+  }
+
   if (lastElement && isList(lastElement)) {
     lastElement = findLastElement(lastElement as HTMLElement);
   }

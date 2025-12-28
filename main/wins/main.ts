@@ -5,6 +5,8 @@ import {
   IPC_EVENTS,
   MAIN_WIN_SIZE,
   MENU_IDS,
+  MESSAGE_ITEM_MENU_IDS,
+  // MESSAGE_ITEM_MENU_IDS,
   WINDOW_NAMES,
 } from "../../common/constants";
 import { createProvider } from "@main/providers";
@@ -139,6 +141,35 @@ const registerMenus = (window: BrowserWindow) => {
         ),
     },
   ]);
+
+  const messageItemMenuItemClick = (id: string) => {
+    logManager.logUserOperation(
+      `${IPC_EVENTS.SHOW_CONTEXT_MENU}:${MENU_IDS.MESSAGE_ITEM}-${id}`
+    );
+    window.webContents.send(
+      `${IPC_EVENTS.SHOW_CONTEXT_MENU}:${MENU_IDS.MESSAGE_ITEM}`,
+      id
+    );
+  };
+
+  menuManager.register(MENU_IDS.MESSAGE_ITEM, [
+    {
+      id: MESSAGE_ITEM_MENU_IDS.COPY,
+      label: "menu.message.copyMessage",
+      click: () => messageItemMenuItemClick(MESSAGE_ITEM_MENU_IDS.COPY),
+    },
+    {
+      id: MESSAGE_ITEM_MENU_IDS.SELECT,
+      label: "menu.message.selectMessage",
+      click: () => messageItemMenuItemClick(MESSAGE_ITEM_MENU_IDS.SELECT),
+    },
+    { type: "separator" },
+    {
+      id: MESSAGE_ITEM_MENU_IDS.DELETE,
+      label: "menu.message.deleteMessage",
+      click: () => messageItemMenuItemClick(MESSAGE_ITEM_MENU_IDS.DELETE),
+    },
+  ]);
 };
 
 export function setupMainWindow() {
@@ -166,7 +197,7 @@ export function setupMainWindow() {
         for await (const chunk of chunks) {
           const chunkContent = {
             messageId,
-            data: chunk
+            data: chunk,
           };
           mainWindow.webContents.send(
             IPC_EVENTS.START_A_DIALOG + "back" + messageId,

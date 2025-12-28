@@ -1,28 +1,30 @@
 <template>
   <n-config-provider class="h-full w-screen flex text-tx-primary">
-    <aside
-      class="sidebar h-full flex shrink-0 flex-col"
-      :style="{ width: sidebarSizeWidth + 'px' }"
-    >
-      <div class="flex-auto flex">
-        <nav-bar />
-        <conversation-list class="flex-auto" :width="sidebarSizeWidth" />
+    <n-message-provider>
+      <aside
+        class="sidebar h-full flex shrink-0 flex-col"
+        :style="{ width: sidebarSizeWidth + 'px' }"
+      >
+        <div class="flex-auto flex">
+          <nav-bar />
+          <conversation-list class="flex-auto" :width="sidebarSizeWidth" />
+        </div>
+      </aside>
+      <resize-divider
+        direction="vertical"
+        v-model:size="sidebarSizeWidth"
+        :max-size="800"
+        :min-size="320"
+      />
+      <div class="flex-auto">
+        <router-view />
       </div>
-    </aside>
-    <resize-divider
-      direction="vertical"
-      v-model:size="sidebarSizeWidth"
-      :max-size="800"
-      :min-size="320"
-    />
-    <div class="flex-auto">
-      <router-view />
-    </div>
+    </n-message-provider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import { NConfigProvider } from "naive-ui";
+import { NConfigProvider, NMessageProvider } from "naive-ui";
 import { initProviders } from "./dataBase";
 import NavBar from "./components/NavBar.vue";
 import ResizeDivider from "./components/ResizeDivider.vue";
