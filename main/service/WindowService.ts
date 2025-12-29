@@ -1,6 +1,6 @@
 import type { WindowNames } from "@common/types";
 
-import { IPC_EVENTS, WINDOW_NAMES } from "@common/constants";
+import { CONFIG_KEYS, IPC_EVENTS, WINDOW_NAMES } from "@common/constants";
 import {
   BrowserWindow,
   BrowserWindowConstructorOptions,
@@ -14,6 +14,7 @@ import { debounce } from "@common/utils";
 import logManager from "./LogService";
 import themeManager from "./ThemeService";
 import path from "node:path";
+import configManager from "./ConfigService";
 
 interface WindowState {
   instance: BrowserWindow | void;
@@ -60,7 +61,8 @@ class WindowService {
   }
 
   private _isReallyClose(windowName: WindowNames | void) {
-    if (windowName === WINDOW_NAMES.MAIN) return true; // todo: 最小化托盘
+    if (windowName === WINDOW_NAMES.MAIN)
+      return configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY) === false; // todo: 最小化托盘
     if (windowName === WINDOW_NAMES.SETTING) return false;
 
     return true;
@@ -252,7 +254,7 @@ class WindowService {
         win?.instance?.close()
       );
 
-    const minimizeToTray = false; // todo : 从配置中读取
+    const minimizeToTray = configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY);
     if (!minimizeToTray && !this.get(WINDOW_NAMES.MAIN)?.isVisible())
       return Object.values(this._winStates).forEach(
         (win) => !win?.instance?.isVisible() && win?.instance?.close()

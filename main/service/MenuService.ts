@@ -1,10 +1,11 @@
 import { ipcMain, Menu, MenuItemConstructorOptions } from "electron";
 import logManager from "./LogService";
-import { IPC_EVENTS } from "@common/constants";
+import { CONFIG_KEYS, IPC_EVENTS } from "@common/constants";
 import { cloneDeep } from "@common/utils";
 import { createTranslator } from "@main/utils";
+import configManager from "./ConfigService";
 
-// 国际化函数 
+// 国际化函数
 let t: ReturnType<typeof createTranslator> = createTranslator();
 
 /**
@@ -37,6 +38,10 @@ class MenuService {
 
   private _setupLanguageChangeListener() {
     // todo 国际化语言的切换
+    configManager.onConfigChange((config) => {
+      if (!config[CONFIG_KEYS.LANGUAGE]) return;
+      t = createTranslator();
+    });
   }
 
   public static getInstance() {

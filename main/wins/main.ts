@@ -1,5 +1,6 @@
 import { BrowserWindow, ipcMain } from "electron";
 import {
+  CONFIG_KEYS,
   CONVERSATION_ITEM_MENU_IDS,
   CONVERSATION_LIST_MENU_IDS,
   IPC_EVENTS,
@@ -13,6 +14,7 @@ import { createProvider } from "@main/providers";
 import windowManager from "../service/WindowService";
 import menuManager from "@main/service/MenuService";
 import logManager from "@main/service/LogService";
+import configManager from "@main/service/ConfigService";
 
 const registerMenus = (window: BrowserWindow) => {
   const conversationItemMenuItemClick = (id: string) => {
@@ -174,6 +176,12 @@ const registerMenus = (window: BrowserWindow) => {
 
 export function setupMainWindow() {
   windowManager.onWindowCreate(WINDOW_NAMES.MAIN, (mainWindow) => {
+    let minimizeToTray = configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY)
+    configManager.onConfigChange(config => {
+      if(minimizeToTray === config[CONFIG_KEYS.MINIMIZE_TO_TRAY]) return 
+      minimizeToTray = config[CONFIG_KEYS.MINIMIZE_TO_TRAY]
+      // TODO 每次配置变化需要触发最小化托盘服务 初始化
+    })
     registerMenus(mainWindow);
   });
   windowManager.create(WINDOW_NAMES.MAIN, MAIN_WIN_SIZE);
