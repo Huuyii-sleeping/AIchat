@@ -8,11 +8,11 @@ import * as path from "path";
 import logManager from "./LogService";
 
 const DEFAULT_CONFIG: IConfig = {
-  [CONFIG_KEYS.THEME_MODE]: "system",
+  [CONFIG_KEYS.THEME_MODE]: "dark",
   [CONFIG_KEYS.PRIMARY_COLOR]: "#BB5BE7",
   [CONFIG_KEYS.LANGUAGE]: "zh",
   [CONFIG_KEYS.FONT_SIZE]: 14,
-  [CONFIG_KEYS.MINIMIZE_TO_TRAY]: false,
+  [CONFIG_KEYS.MINIMIZE_TO_TRAY]: true,
   [CONFIG_KEYS.PROVIDER]: "",
   [CONFIG_KEYS.DEFAULT_MODEL]: null,
 };
@@ -29,6 +29,7 @@ export class ConfigService {
     this._configPath = path.join(app.getPath("userData"), "config.json");
     // 加载配置
     this._config = this._loadConfig();
+    this._config = DEFAULT_CONFIG;
     // 设置IPC通信
     this._setupIpcEvents();
     logManager.info("ConfigService initialized sucessfully");
@@ -37,8 +38,10 @@ export class ConfigService {
   private _setupIpcEvents() {
     const duration = 200;
     const handleUpdate = debounce((val) => this.update(val), duration);
+    const handleSet = debounce((key, val) => this.set(key, val), duration);
+
     ipcMain.handle(IPC_EVENTS.GET_CONFIG, (_, key) => this.get(key));
-    ipcMain.on(IPC_EVENTS.SET_CONFIG, (_, key, val) => this.set(key, val));
+    ipcMain.on(IPC_EVENTS.SET_CONFIG, (_, key, val) => handleSet(key, val));
     ipcMain.on(IPC_EVENTS.UPDATE_CONFIG, (_, updates) => handleUpdate(updates));
   }
 
