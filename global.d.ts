@@ -34,7 +34,10 @@ interface DialogueBackStream {
   data: UniversalChunk & { isError?: boolean };
 }
 
+type windowNames = "main" | "setting" | "dialog";
+
 interface WindowApi {
+  openWindow: (name: windowNames) => void;
   closeWindow: () => void;
   minimizeWindow: () => void;
   maximizeWindow: () => void;
@@ -57,9 +60,12 @@ interface WindowApi {
   createDialog: (params: CreateDialogProps) => Promise<string>;
   _dialogFeedback: (val: "cancel" | "confirm", winId: number) => void;
   _dialogGetParams: () => Promise<CreateDialogProps>;
- 
+
   startADialogue: (params: CreateDialogueProps) => void;
-  onDialogueBack: (cb: (data: DialogueBackStream) => void, messageId: number) => void;
+  onDialogueBack: (
+    cb: (data: DialogueBackStream) => void,
+    messageId: number
+  ) => void;
 
   // 日志记录相关api
   logger: {

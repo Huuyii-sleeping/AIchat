@@ -15,6 +15,7 @@ import logManager from "./LogService";
 import themeManager from "./ThemeService";
 import path from "node:path";
 import configManager from "./ConfigService";
+import { createLogo } from "@main/utils";
 
 interface WindowState {
   instance: BrowserWindow | void;
@@ -48,6 +49,7 @@ const SHARED_WINDOW_OPTIONS = {
 
 class WindowService {
   private static _instance: WindowService;
+  private _logo = createLogo();
 
   private _winStates: Record<WindowNames | string, WindowState> = {
     main: { instance: void 0, isHidden: false, onCreate: [], onClosed: [] },
@@ -273,8 +275,21 @@ class WindowService {
       ? (this._winStates[name].instance as BrowserWindow)
       : new BrowserWindow({
           ...SHARED_WINDOW_OPTIONS,
+          icon: this._logo,
           ...opts,
         });
+  }
+
+  public focus(target: BrowserWindow | void | null) {
+    if (!target) return;
+    const name = this.getName(target);
+    if (target?.isMinimized()) {
+      target.restore();
+      logManager.debug(`Window ${name} restored and focued`);
+    } else {
+      logManager.debug(`Window ${name} focued`);
+    }
+    target.focus();
   }
 
   public close(target: BrowserWindow | void | null, really: boolean = true) {

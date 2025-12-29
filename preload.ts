@@ -2,9 +2,12 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer } from "electron";
 import { IPC_EVENTS, WINDOW_NAMES } from "./common/constants";
+import { WindowNames } from "@common/types";
 
 const api: WindowApi = {
   // 基础交互窗口操作
+  openWindow: (name: WindowNames) => 
+    ipcRenderer.send(`${IPC_EVENTS.OPEN_WINDOW}:${name}`),
   closeWindow: () => ipcRenderer.send(IPC_EVENTS.CLOSE_WINDOW),
   minimizeWindow: () => ipcRenderer.send(IPC_EVENTS.MINIMIZE_WINDOW),
   maximizeWindow: () => ipcRenderer.send(IPC_EVENTS.MAXIMIZE_WINDOW),

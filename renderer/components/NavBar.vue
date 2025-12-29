@@ -36,9 +36,13 @@ import DragRegion from "./DragRegion.vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
 import NativeTooltip from "./NativeTooltip.vue";
+import { openWindow } from "@renderer/utils/system";
+import { WINDOW_NAMES } from "@common/constants";
 defineOptions({ name: "NavBar" });
 const { t } = useI18n();
-const openSettingWindow = () => {};
+const openSettingWindow = () => {
+  openWindow(WINDOW_NAMES.SETTING);
+};
 </script>
 
 <style scoped></style>
