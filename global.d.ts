@@ -81,6 +81,9 @@ interface WindowApi {
   updateConfig: (value: any) => void;
   onConfigChange: (callback: (config: any) => void) => () => void;
   removeConfigChangeListener: (callback: (config: any) => void) => void;
+
+  // 快捷键
+  onShortcutCalled: (key: string, cb: () => void) => () => void;
 }
 
 declare interface Window {

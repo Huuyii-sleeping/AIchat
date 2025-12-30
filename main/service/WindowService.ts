@@ -2,6 +2,7 @@ import type { WindowNames } from "@common/types";
 
 import { CONFIG_KEYS, IPC_EVENTS, WINDOW_NAMES } from "@common/constants";
 import {
+  app,
   BrowserWindow,
   BrowserWindowConstructorOptions,
   ipcMain,
@@ -16,6 +17,7 @@ import themeManager from "./ThemeService";
 import path from "node:path";
 import configManager from "./ConfigService";
 import { createLogo } from "@main/utils";
+import shortcutManager from "./ShortcutService";
 
 interface WindowState {
   instance: BrowserWindow | void;
@@ -64,7 +66,7 @@ class WindowService {
 
   private _isReallyClose(windowName: WindowNames | void) {
     if (windowName === WINDOW_NAMES.MAIN)
-      return configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY) === false; 
+      return configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY) === false;
     if (windowName === WINDOW_NAMES.SETTING) return false;
 
     return true;
@@ -118,6 +120,8 @@ class WindowService {
       size,
     });
 
+    this._handleWindowShortcuts(window);
+
     if (!isHiddenWin) {
       this._winStates[name].instance = window;
       this._winStates[name].onCreate.forEach((callback) => callback(window));
@@ -130,6 +134,35 @@ class WindowService {
 
     return window;
   }
+
+  private _handleWindowShortcuts(win: BrowserWindow) {
+    const isPackageed = app.isPackaged;
+
+    const proxyCloseEvent = () => {
+      this.close(win, this._isReallyClose(this.getName(win)));
+      return true;
+    };
+
+    shortcutManager.registerForWindow(win, (input) => {
+      if (input.key === "F4" && input.alt && process.platform !== "darwin") {
+        return proxyCloseEvent();
+      }
+      if (input.code === "KeyW" && input.modifiers.includes("control")) {
+        return proxyCloseEvent();
+      }
+
+      if (!isPackageed) return;
+      // 禁用开发者工具
+      if (
+        input.type === "keyDown" &&
+        input.code === "KeyI" &&
+        input.modifiers.includes("control") &&
+        input.modifiers.includes("shift")
+      )
+        return true;
+    });
+  }
+
   private _setupWinLifecycle(window: BrowserWindow, name: WindowNames) {
     const updateWinStatus = debounce(
       () =>

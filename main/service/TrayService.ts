@@ -9,6 +9,7 @@ import {
 } from "@common/constants";
 import windowManager from "./WindowService";
 import logManager from "./LogService";
+import shortcutManager from "./ShortcutService";
 
 let t: ReturnType<typeof createTranslator> = createTranslator();
 
@@ -56,7 +57,8 @@ class TrayService {
 
     this._tray.setToolTip(t("tray.tooltip") ?? "xq Application");
 
-    // TOOD 快捷键
+    // 注册快捷键
+    shortcutManager.register("CmdOrCtrl+N", "tray.showWindow", showWindow);
 
     this._tray.setContextMenu(
       Menu.buildFromTemplate([
@@ -96,16 +98,16 @@ class TrayService {
     this._updateTray();
     app.on("quit", () => {
       this.destroy();
-      this._tray = null;
-      //TODO 移除快捷键
+      shortcutManager.unregister("tray.showWindow");
     });
   }
 
   public destroy() {
     this._tray?.destroy();
     this._tray = null;
-    // TODO 快捷键
-    // this._removeLanguageListener?.();
+
+    shortcutManager.unregister("tray.showWindow");
+
     if (this._removeLanguageListener) {
       this._removeLanguageListener();
       this._removeLanguageListener = void 0;

@@ -93,7 +93,7 @@ const api: WindowApi = {
       );
   },
 
-  // setting
+  // setting 设置
   getConfig: (key: string) => ipcRenderer.invoke(IPC_EVENTS.GET_CONFIG, key),
   setConfig: (key: string, value: any) =>
     ipcRenderer.send(IPC_EVENTS.SET_CONFIG, key, value),
@@ -106,6 +106,13 @@ const api: WindowApi = {
   },
   removeConfigChangeListener: (callback: (config: any) => void) =>
     ipcRenderer.removeListener(IPC_EVENTS.CONFIG_UPDATED, callback),
+
+  // 快捷键
+  onShortcutCalled: (key: string, cb: () => void) => {
+    ipcRenderer.on(IPC_EVENTS.SHORTCUT_CALLED + key, (_event) => cb());
+    return () =>
+      ipcRenderer.removeListener(IPC_EVENTS.SHORTCUT_CALLED + key, cb);
+  },
 };
 
 // 挂载到window的对象上面

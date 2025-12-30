@@ -7,6 +7,7 @@ import {
   MAIN_WIN_SIZE,
   MENU_IDS,
   MESSAGE_ITEM_MENU_IDS,
+  SHORTCUT_KEYS,
   // MESSAGE_ITEM_MENU_IDS,
   WINDOW_NAMES,
 } from "../../common/constants";
@@ -16,6 +17,7 @@ import menuManager from "@main/service/MenuService";
 import logManager from "@main/service/LogService";
 import configManager from "@main/service/ConfigService";
 import trayManager from "@main/service/TrayService";
+import shortcutManager from "@main/service/ShortcutService";
 
 const handleTray = (minimizeToTray: boolean) => {
   if (minimizeToTray) {
@@ -183,6 +185,22 @@ const registerMenus = (window: BrowserWindow) => {
   ]);
 };
 
+const destoryMenus = () => {
+  menuManager.destoryMenu(MENU_IDS.CONVERSATION_ITEM);
+  menuManager.destoryMenu(MENU_IDS.CONVERSATION_LIST);
+  menuManager.destoryMenu(MENU_IDS.MESSAGE_ITEM);
+};
+
+const registerShortcuts = (window: BrowserWindow) => {
+  shortcutManager.registerForWindow(window, (input) => {
+    if (input.code === "Enter" && input.modifiers.includes("control")) {
+      window?.webContents.send(
+        IPC_EVENTS.SHORTCUT_CALLED + SHORTCUT_KEYS.SEND_MESSAGE
+      );
+    }
+  });
+};
+
 export function setupMainWindow() {
   windowManager.onWindowCreate(WINDOW_NAMES.MAIN, (mainWindow) => {
     let minimizeToTray = configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY);
@@ -193,6 +211,10 @@ export function setupMainWindow() {
     });
     handleTray(minimizeToTray);
     registerMenus(mainWindow);
+    registerShortcuts(mainWindow);
+  });
+  windowManager.onWindowClosed(WINDOW_NAMES.MAIN, () => {
+    destoryMenus();
   });
   windowManager.create(WINDOW_NAMES.MAIN, MAIN_WIN_SIZE);
 
@@ -239,3 +261,5 @@ export function setupMainWindow() {
     }
   );
 }
+
+export default setupMainWindow;
