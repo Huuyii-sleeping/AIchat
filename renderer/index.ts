@@ -28,16 +28,18 @@
 
 import "./styles/index.css";
 import "vfonts/Lato.css";
+import { errorHandler } from "./utils/errorHandler";
+import { createPinia } from "pinia";
+import { preloadIcons } from "./utils/icons";
 
 import App from "../renderer/App.vue";
 import i18n from "./i18n";
-import { errorHandler } from "./utils/errorHandler";
 import TitleBar from "./components/TitleBar.vue";
 import DragRegion from "./components/DragRegion.vue";
 import router from "./router";
-import { createPinia } from "pinia";
 import hljs from "highlight.js/lib/core";
 import xml from "highlight.js/lib/languages/xml";
+import logger from "./utils/logger";
 
 hljs.registerLanguage("vue", xml);
 
@@ -48,10 +50,13 @@ const components = function (app: any) {
 
 const pinia = createPinia();
 
-createApp(App)
-  .use(pinia)
-  .use(i18n)
-  .use(components as any)
-  .use(router)
-  .use(errorHandler)
-  .mount("#app");
+preloadIcons().finally(() => {
+  logger.info("Icon preloaded");
+  createApp(App)
+    .use(pinia)
+    .use(i18n)
+    .use(components as any)
+    .use(router)
+    .use(errorHandler)
+    .mount("#app");
+});
