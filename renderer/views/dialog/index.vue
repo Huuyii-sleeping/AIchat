@@ -1,5 +1,11 @@
 <template>
-  <n-config-provider class="h-screen w-full flex flex-col">
+  <n-config-provider
+    class="h-screen w-full flex flex-col"
+    :locale="locale"
+    :theme="theme"
+    :date-locale="dateLocale"
+    :theme-overrides="themeOverrides"
+  >
     <title-bar class="h-[30px]" :is-minimizable="false" :is-maximizable="false">
       <drag-region class="p-3 text-sm font-bold text-tx-primary">
         {{ t(params.title ?? "") }}
@@ -27,8 +33,15 @@
 </template>
 
 <script setup lang="ts">
+import useFontSize from "@renderer/hooks/useFontSize";
+import useNativeLocale from "@renderer/hooks/useNativeLocale";
+import useNativeTheme from "@renderer/hooks/useNativeTheme";
 import { NConfigProvider } from "naive-ui";
 import type { Ref } from "vue";
+
+useFontSize();
+const { theme, themeOverrides } = useNativeTheme();
+const { locale, dateLocale } = useNativeLocale();
 const { t } = useI18n();
 const params: Ref<CreateDialogProps> = ref({
   title: "",

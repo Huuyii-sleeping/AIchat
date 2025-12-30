@@ -1,5 +1,11 @@
 <template>
-  <n-config-provider class="h-full w-screen flex text-tx-primary">
+  <n-config-provider
+    class="h-full w-screen flex text-tx-primary"
+    :locale="locale"
+    :date-locale="dateLocale"
+    :theme="theme"
+    :theme-overrides="themeOverrides"
+  >
     <n-message-provider>
       <aside
         class="sidebar h-full flex shrink-0 flex-col"
@@ -31,11 +37,17 @@ import ResizeDivider from "./components/ResizeDivider.vue";
 import ConversationList from "./components/ConversationList/index.vue";
 import { useProviderStore } from "./stores/providers";
 import { useConversationStore } from "./stores/conversations";
-import useConfig from "./hooks/useConfig";
+import useNativeLocale from "./hooks/useNativeLocale";
+import useNativeTheme from "./hooks/useNativeTheme";
+import useFontSize from "./hooks/useFontSize";
 const sidebarSizeWidth = ref(320);
+
 const { initialize: initializeProviderStore } = useProviderStore();
 const { initialize: initializeConversationStore } = useConversationStore();
-useConfig();
+const { locale, dateLocale } = useNativeLocale();
+const { theme, themeOverrides } = useNativeTheme();
+
+useFontSize();
 onMounted(async () => {
   await initProviders();
   await initializeProviderStore();

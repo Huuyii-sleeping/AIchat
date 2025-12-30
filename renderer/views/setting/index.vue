@@ -1,5 +1,11 @@
 <template>
-  <n-config-provider class="bg-main text-tx-primary h-screen flex flex-col">
+  <n-config-provider
+    class="bg-main text-tx-primary h-screen flex flex-col"
+    :locale="locale"
+    :date-locale="dateLocale"
+    :theme="theme"
+    :theme-overrides="themeOverrides"
+  >
     <n-message-provider>
       <title-bar :is-maximizable="false" @close="onWindowClose">
         <drag-region class="p-2 text-[16px]">{{
@@ -39,12 +45,12 @@
                   :options="languageOptions"
                 />
               </n-form-item>
-              <!-- <n-form-item :label="t('settings.appearance.fontSize')">
+              <n-form-item :label="t('settings.appearance.fontSize')">
                 <n-select
-                  v-model:value="formModel.fontSize"
+                  v-model:value="formModel.fontsize"
                   :options="fontSizeOptions"
                 />
-              </n-form-item> -->
+              </n-form-item>
               <n-form-item
                 :label="t('settings.behavior.minimizeToTray')"
                 path="minimizeToTray"
@@ -76,6 +82,13 @@ import {
   NScrollbar,
 } from "naive-ui";
 import useConfig from "@renderer/hooks/useConfig";
+import useFontSize from "@renderer/hooks/useFontSize";
+import useNativeTheme from "@renderer/hooks/useNativeTheme";
+import useNativeLocale from "@renderer/hooks/useNativeLocale";
+
+useFontSize();
+const { theme, themeOverrides } = useNativeTheme();
+const { locale, dateLocale } = useNativeLocale();
 
 const { t } = useI18n();
 const activeTab = ref("basic");

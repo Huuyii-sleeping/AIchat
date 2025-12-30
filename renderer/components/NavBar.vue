@@ -6,6 +6,7 @@
       <ul class="flex-auto">
         <li
           class="sidebar-item no-drag cursor-pointer hover:text-primary-hover text-tx-primary"
+          :class="{ active: route.name === 'conversation' }"
         >
           <native-tooltip :content="t('main.sidebar.conversations')">
             <iconify-icon icon="lets-icons:comment" width="24" height="24" />
@@ -38,11 +39,20 @@ import ThemeSwitcher from "./ThemeSwitcher.vue";
 import NativeTooltip from "./NativeTooltip.vue";
 import { openWindow } from "@renderer/utils/system";
 import { WINDOW_NAMES } from "@common/constants";
+
 defineOptions({ name: "NavBar" });
 const { t } = useI18n();
+const route = useRoute();
 const openSettingWindow = () => {
   openWindow(WINDOW_NAMES.SETTING);
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+li {
+  margin-top: 10px;
+}
+nav li.active {
+  color: var(--primary-color);
+}
+</style>
