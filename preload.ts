@@ -6,7 +6,7 @@ import { WindowNames } from "@common/types";
 
 const api: WindowApi = {
   // 基础交互窗口操作
-  openWindow: (name: WindowNames) => 
+  openWindow: (name: WindowNames) =>
     ipcRenderer.send(`${IPC_EVENTS.OPEN_WINDOW}:${name}`),
   closeWindow: () => ipcRenderer.send(IPC_EVENTS.CLOSE_WINDOW),
   minimizeWindow: () => ipcRenderer.send(IPC_EVENTS.MINIMIZE_WINDOW),
@@ -92,6 +92,20 @@ const api: WindowApi = {
         callback
       );
   },
+
+  // setting
+  getConfig: (key: string) => ipcRenderer.invoke(IPC_EVENTS.GET_CONFIG, key),
+  setConfig: (key: string, value: any) =>
+    ipcRenderer.send(IPC_EVENTS.SET_CONFIG, key, value),
+  updateConfig: (value: any) =>
+    ipcRenderer.send(IPC_EVENTS.UPDATE_CONFIG, value),
+  onConfigChange: (callback: (config: any) => void) => {
+    ipcRenderer.on(IPC_EVENTS.CONFIG_UPDATED, (_, config) => callback(config));
+    return () =>
+      ipcRenderer.removeListener(IPC_EVENTS.CONFIG_UPDATED, callback);
+  },
+  removeConfigChangeListener: (callback: (config: any) => void) =>
+    ipcRenderer.removeListener(IPC_EVENTS.CONFIG_UPDATED, callback),
 };
 
 // 挂载到window的对象上面

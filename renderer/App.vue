@@ -31,9 +31,11 @@ import ResizeDivider from "./components/ResizeDivider.vue";
 import ConversationList from "./components/ConversationList/index.vue";
 import { useProviderStore } from "./stores/providers";
 import { useConversationStore } from "./stores/conversations";
+import useConfig from "./hooks/useConfig";
 const sidebarSizeWidth = ref(320);
 const { initialize: initializeProviderStore } = useProviderStore();
 const { initialize: initializeConversationStore } = useConversationStore();
+useConfig();
 onMounted(async () => {
   await initProviders();
   await initializeProviderStore();

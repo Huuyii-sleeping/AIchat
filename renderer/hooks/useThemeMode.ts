@@ -1,3 +1,6 @@
+import useConfig from "./useConfig";
+import { CONFIG_KEYS } from "@common/constants";
+
 const iconMap = new Map([
   ["system", "mdi:auto-awesome-outline"],
   ["light", "entypo:light-up"],
@@ -13,12 +16,14 @@ const tooltipMap = new Map([
 export function useThemeMode() {
   const themeMode = ref<ThemeMode>("dark");
   const isDark = ref<boolean>(false);
-  const { t } = useI18n()
+  const { t } = useI18n();
+  const config = useConfig();
+
   //   类似发布订阅模式
   const themeChangeCallback: Array<(mode: ThemeMode) => void> = [];
   const themeIcon = computed(() => iconMap.get(themeMode.value || "system"));
   const themeTooltip = computed(() =>
-    t(tooltipMap.get(themeMode.value || 'system') as string)
+    t(tooltipMap.get(themeMode.value || "system") as string)
   );
 
   function setThemeMode(mode: ThemeMode) {
@@ -33,6 +38,13 @@ export function useThemeMode() {
   function onThemeChange(callback: (mode: ThemeMode) => void) {
     themeChangeCallback.push(callback);
   }
+
+  watch(
+    () => config[CONFIG_KEYS.THEME_MODE],
+    (mode) => {
+      themeMode.value !== mode && setThemeMode(mode);
+    }
+  );
 
   onMounted(async () => {
     // 触发订阅列表

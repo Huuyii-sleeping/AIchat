@@ -88,7 +88,7 @@ export class ConfigService {
   private _notifyListeners(): void {
     // TODO render 进程通知
     BrowserWindow.getAllWindows().forEach((win) =>
-      win.webContents.send(IPC_EVENTS.UPDATE_CONFIG, this._config)
+      win.webContents.send(IPC_EVENTS.CONFIG_UPDATED, this._config)
     );
     this._listeners.forEach((listener) => listener({ ...this._config }));
   }

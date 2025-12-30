@@ -74,6 +74,13 @@ interface WindowApi {
     warn: (message: string, ...meta: any[]) => void;
     error: (message: string, ...meta: any[]) => void;
   };
+
+  // config设置相关
+  getConfig: (key: string) => Promise<any>;
+  setConfig: (key: string, value: any) => void;
+  updateConfig: (value: any) => void;
+  onConfigChange: (callback: (config: any) => void) => () => void;
+  removeConfigChangeListener: (callback: (config: any) => void) => void;
 }
 
 declare interface Window {
