@@ -37,7 +37,6 @@ class MenuService {
   }
 
   private _setupLanguageChangeListener() {
-    // todo 国际化语言的切换
     configManager.onConfigChange((config) => {
       if (!config[CONFIG_KEYS.LANGUAGE]) return;
       t = createTranslator();

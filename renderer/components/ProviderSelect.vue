@@ -35,15 +35,17 @@ const providersStore = useProviderStore();
 const selectedProvider = defineModel<SelectValue>("modelValue");
 
 const providerOptions = computed(() =>
-  providersStore.allProviders.map((item) => ({
-    label: item.title || item.name,
-    type: "group",
-    key: item.id,
-    children: item.models.map((model) => ({
-      label: model,
-      value: `${item.id}:${model}`,
-    })),
-  }))
+  providersStore.allProviders
+    .filter((item) => item.visible)
+    .map((item) => ({
+      label: item.title || item.name,
+      type: "group",
+      key: item.id,
+      children: item.models.map((model) => ({
+        label: model,
+        value: `${item.id}:${model}`,
+      })),
+    }))
 );
 
 function openSettingWindow() {

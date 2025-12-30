@@ -7,7 +7,6 @@
         :key="message.id"
       >
         <div class="pr-5" v-show="isBatchMode">
-          <!-- todo 多选框 -->
           <n-checkbox
             :checked="itemChecked(message.id)"
             @update:checked="handleCheckItem(message.id, $event)"
@@ -27,7 +26,6 @@
                 textAlign: message.type === 'question' ? 'end' : 'start',
               }"
             >
-              <!-- todo timeAgo -->
               {{ formatTimeAgo(message.createdAt) }}
             </div>
             <div

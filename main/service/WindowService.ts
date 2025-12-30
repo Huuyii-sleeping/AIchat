@@ -64,7 +64,7 @@ class WindowService {
 
   private _isReallyClose(windowName: WindowNames | void) {
     if (windowName === WINDOW_NAMES.MAIN)
-      return configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY) === false; // todo: 最小化托盘
+      return configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY) === false; 
     if (windowName === WINDOW_NAMES.SETTING) return false;
 
     return true;

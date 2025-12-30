@@ -180,7 +180,6 @@ export const useMessageStore = defineStore("message", () => {
 
   async function deleteMessage(id: number) {
     let currentMsg = cloneDeep(messages.value.find((item) => item.id === id));
-    // TODO stop 当大模型回复的时候需要stop
     stopMessage(id, false);
     await dataBase.messages.delete(id);
     currentMsg && _updateConversation(currentMsg.conversationId);

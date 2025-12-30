@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MAIN_WIN_SIZE } from "@common/constants";
+import { CONFIG_KEYS, MAIN_WIN_SIZE } from "@common/constants";
 import { throttle } from "@common/utils";
 import { SelectValue } from "@renderer/types";
 import CreateConversation from "@renderer/components/CreateConversation.vue";
@@ -69,13 +69,14 @@ import MessageList from "@renderer/components/MessageList.vue";
 import { useMessageStore } from "@renderer/stores/messages";
 import { useConversationStore } from "@renderer/stores/conversations";
 import { useProviderStore } from "@renderer/stores/providers";
+import useConfig from "@renderer/hooks/useConfig";
 
 const router = useRouter();
 const route = useRoute();
+const config = useConfig();
 const conversationStore = useConversationStore();
 const messageStore = useMessageStore();
 const providerStore = useProviderStore();
-const { t } = useI18n();
 const listHeight = ref(0);
 const listScale = ref(0.7);
 const maxListHeight = ref(window.innerHeight * 0.7);
@@ -96,6 +97,18 @@ const selectedModel = computed(
 const conversationId = computed(
   () => Number(route.params.id) as undefined | number
 );
+
+const defaultModel = computed(() => {
+  const vals: string[] = [];
+  providerStore.allProviders.forEach((provider) => {
+    if (!provider.visible) return;
+    provider.models.forEach((model) => {
+      vals.push(`${provider.id}:${model}`);
+    });
+  });
+  if (!vals.includes(config[CONFIG_KEYS.DEFAULT_MODEL] ?? "")) return null;
+  return config[CONFIG_KEYS.DEFAULT_MODEL] || null;
+});
 
 const messageinputStatus = computed(() => {
   if (isStoping.value) return "loading";
@@ -200,7 +213,7 @@ watch(
   [() => conversationId.value, () => msgInputRef.value],
   async ([id, msgInput]) => {
     if (!msgInput || !id) {
-      // TODO: 默认模型
+      provider.value = defaultModel.value
       return;
     }
 
